@@ -5,7 +5,8 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
-const countryRouter = require("./routes/countryRoute") // Updated route path
+const countryRouter = require("./routes/countryRoute") // country route path
+const manufacturerRouter = require("./routes/manufacturerRoute")
 const { errorHandler } = require(`./helpers/helper.js`)
 
 dotenv.config({ path: `./config.env` })
@@ -33,6 +34,9 @@ connectToDbStartListening()
 
 // Use the country router
 app.use("/countries", countryRouter)
+
+// use manufacturer router
+app.use("/manufacturers", manufacturerRouter)
 
 app.all("*", (req, res, next) => {
 	const err = new Error(`can't find ${req.originalUrl} on the server`)

@@ -4,8 +4,6 @@ const { errObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const countryService = require(`${__dirname}/../services/countryService`)
 
-const Country = require(`${__dirname}/../models/countryModel`)
-
 exports.getCountries = async (req, res, next) => {
 	try {
 		const countries = await countryService.getAllCountries()
@@ -25,10 +23,18 @@ exports.setCountries = async (req, res, next) => {
 		const createdCountry = await countryService.createCountry(country)
 		res.status(201).json({ status: "success", data: createdCountry })
 	} catch (error) {
-		// Pass the error to the next middleware for centralized error handling
 		next(error)
 	}
 }
+
+/**
+ *	removeCountry
+ *
+ *	Description: removes a country by its id.
+ *
+ * There should be an id and its length should be greater than 0.
+ *
+ **/
 
 exports.removeCountry = async (req, res, next) => {
 	try {
@@ -44,18 +50,24 @@ exports.removeCountry = async (req, res, next) => {
 			message: `Country with countryId: ${countryId} deleted successfully`,
 		})
 	} catch (error) {
-		throw error
+		next(errObject(400, "can't delete country with countryId: ${countryId}"))
 	}
 }
+
+/**
+ *	updateCountry
+ *
+ *	Description: Updates a country by its id.
+ *
+ * There should be an id and any one of the countryCode, countryName field to update.
+ *
+ **/
 
 exports.updateCountry = async (req, res, next) => {
 	try {
 		const updateDetail = req.body
 		// res.status(200).json({ req: req.body })
 		if (!updateDetail.id) return next(errObject(400, "Country Id is required to update country details"))
-
-		const x = await Country.findById(updateDetail.id)
-		// return next(errObject(400, "Country does not exist for given id"))
 
 		if (!updateDetail.countryName && !updateDetail.countryCode)
 			return next(errObject(400, "Country Name & Country Code is required to update country details"))
