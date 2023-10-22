@@ -9,12 +9,17 @@ const countryRouter = require("./routes/countryRoute") // country route path
 const manufacturerRouter = require("./routes/manufacturerRoute")
 const { errorHandler } = require(`./helpers/helper.js`)
 
+const morgan = require("morgan") // for development only
+
 dotenv.config({ path: `./config.env` })
 
 const DATABASE = process.env.DATABASE.replace("<PASSWORD>", process.env.PASSWORD)
 
 const app = express()
 app.use(express.json())
+////////////////////////////////////////////
+app.use(morgan("dev"))
+/////////////////////////////////////////////
 
 // Connect to the database and start listening
 const connectToDbStartListening = async () => {

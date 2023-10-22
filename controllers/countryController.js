@@ -38,17 +38,14 @@ exports.setCountries = async (req, res, next) => {
 
 exports.removeCountry = async (req, res, next) => {
 	try {
-		const countryId = req.body.id
+		const countryId = req.params.id
 
 		if (!countryId || !countryId.length) {
 			return next(errObject(400, "Country id cannot be empty"))
 		}
 
 		await countryService.deleteCountry(countryId)
-		res.status(204).json({
-			status: "success",
-			message: `Country with countryId: ${countryId} deleted successfully`,
-		})
+		res.status(204).json() //204 - No Content: The request was successful, but there is no additional information to send back
 	} catch (error) {
 		next(errObject(400, "can't delete country with countryId: ${countryId}"))
 	}

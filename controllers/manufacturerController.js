@@ -31,7 +31,7 @@ exports.setManufacturer = async (req, res, next) => {
 /**
  *	removeManufacturer
  *
- *	Description: removes a manufacturer by its id.
+ *	Description: removes a manufacturer  by its id.
  *
  * There should be an id and its length should be greater than 0.
  *
@@ -74,8 +74,11 @@ exports.updateManufacturer = async (req, res, next) => {
 			return next(errObject(400, "Manufacturer Name & Manufacturer Code is required to update country details"))
 
 		const dataToUpdate = {}
-		if (updateDetail.manufacturerName) dataToUpdate.countryRegionName = updateDetail.manufacturerName
-		if (updateDetail.manufacturerCode) dataToUpdate.countryRegionCode = updateDetail.manufacturerCode
+		for (const key in updateDetail) {
+			if (updateDetail[key]) dataToUpdate[key] = updateDetail[key]
+		}
+		// if (updateDetail.manufacturerCode) dataToUpdate.countryRegionCode = updateDetail.manufacturerCode
+		// console.log(dataToUpdate)
 		await manufacturerService.patchManufacturer(updateDetail.id, dataToUpdate)
 		res.status(200).json({ status: "success", message: `country with ${updateDetail.id} updated successfully` })
 	} catch (error) {

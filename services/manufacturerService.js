@@ -17,9 +17,7 @@ exports.createManufacturer = async (manufacturerData) => {
 		const manufacturer = await Manufacturer.create(manufacturerData)
 		return manufacturer
 	} catch (error) {
-		console.log(error)
-		error.statusCode = 400
-		error.message = "Manufacturer details cannot be empty"
+		// console.log(error)
 		throw error
 	}
 }
