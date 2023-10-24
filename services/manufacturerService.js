@@ -2,13 +2,15 @@
 
 const Manufacturer = require("../models/manufacturerModel")
 
-exports.getAllManufacturer = async () => {
+exports.getPagedManufacturer = async (pageNo, docsPerPage) => {
 	try {
-		const manufacturers = await Manufacturer.find({})
+		const manufacturers = await Manufacturer.find()
+			.skip(pageNo * docsPerPage)
+			.limit(docsPerPage)
+
 		return manufacturers
 	} catch (error) {
-		console.log(error)
-		throw error
+		throw error // Let the error handler handle it
 	}
 }
 

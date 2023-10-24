@@ -2,9 +2,12 @@
 
 const Country = require("../models/countryModel")
 
-exports.getAllCountries = async () => {
+exports.getPagedCountries = async (pageNo, docsPerPage) => {
 	try {
 		const countries = await Country.find()
+			.skip(pageNo * docsPerPage)
+			.limit(docsPerPage)
+
 		return countries
 	} catch (error) {
 		throw error // Let the error handler handle it

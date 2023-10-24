@@ -8,11 +8,18 @@ const manufacturerService = require(`${__dirname}/../services/manufacturerServic
 
 exports.getManufacturers = async (req, res, next) => {
 	try {
-		const manufacturer = await manufacturerService.getAllManufacturer()
-		res.status(200).json({
-			status: "success",
-			data: manufacturer,
-		})
+		const pageNo = parseInt(req.query.pageNo) || 0
+		const docsPerPage = parseInt(req.query.docsPerPage) || 10
+
+		const totalDocs = await Manufacturer.countDocuments()
+		const manufacturers = await manufacturerService.getPagedManufacturer(pageNo, docsPerPage)
+
+		const response = {
+			total: totalDocs,
+			manufacturers,
+		}
+
+		res.status(200).json(response)
 	} catch (error) {
 		console.log(error)
 		// Pass the error to the next middleware for centralized error handling
