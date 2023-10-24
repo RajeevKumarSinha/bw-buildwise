@@ -1,8 +1,8 @@
 "use strict"
 
 const mongoose = require("mongoose")
-const Country = require("./countryModel.js")
-const helper = require(`${__dirname}/../helpers/helper.js`)
+const Country = require(`${__dirname}/countryModel.js`)
+const { errObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const manufacturerSchema = new mongoose.Schema({
 	manufacturerName: {
@@ -16,6 +16,7 @@ const manufacturerSchema = new mongoose.Schema({
 	},
 	// countryID: String,
 	manufacturerCode: {
+		unique: true,
 		type: String,
 		required: true,
 	},
@@ -28,18 +29,45 @@ const manufacturerSchema = new mongoose.Schema({
 		enum: ["mm", "inches"], // only these two values are supported.
 	},
 	notes: String,
+	country: Object,
 })
 
-// Before saving the manufacturer, find the corresponding country and get its countryRegionCode
-manufacturerSchema.pre("save", async function (next) {
+// Before saving || updating the manufacturer, find the corresponding country and get its countryRegionCode
+// and save it under country field in the document.
+manufacturerSchema.pre(`findOneAndUpdate`, async function (next) {
+	try {
+		// (this._conditions._id._id) gives id of current document which will be updated.
+		const manufacturer = await Manufacturer.findOne({ _id: this._conditions._id._id })
+
+		// if countryCode is present, proceed to next middleware.
+		if (!this._update.countryCode) return next()
+
+		// Check if `manufacturer` exists and if the `countryRegionCode` of the existing manufacturer
+		// is different from the new `countryCode` provided in the update (this._update.countryCode).
+		if (manufacturer && manufacturer.country.countryRegionCode !== this._update.countryCode) {
+			const country = await Country.findOne({ countryRegionCode: this._update.countryCode })
+			this._update.countryCode = country.countryRegionCode // Update the countryCode field with the countryRegionCode
+			this._update.country = country // Update the country with new country.
+			return next()
+		}
+	} catch (error) {
+		next(errObject(`Country with countryCode ${this._update.countryCode} not found`, 404))
+	}
+})
+
+manufacturerSchema.pre(`save`, async function (next) {
+	console.log(this)
 	const country = await Country.findOne({ countryRegionCode: this.countryCode })
+
+	// console.log(country)
 	if (country) {
 		this.countryCode = country.countryRegionCode // Update the countryCode field with the countryRegionCode
 		this.countryID = country._id
+		this.country = country
 		next()
 	}
 
-	next(helper.errObject(`Country with countryCode ${this.countryCode} not found`, 404))
+	next(errObject(`Country with countryCode ${this.countryCode} not found`, 404))
 })
 
 // before sending the query response check if the country code has changed or not using id.

@@ -37,7 +37,6 @@ exports.patchManufacturer = async (id, updateData) => {
 		return await Manufacturer.findByIdAndUpdate({ _id: id }, updateData)
 	} catch (error) {
 		error.statusCode = 400
-		error.message = "Invalid Id"
 		throw error // Let the error handler handle it
 	}
 }

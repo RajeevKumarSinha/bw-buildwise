@@ -62,18 +62,20 @@ exports.removeCountry = async (req, res, next) => {
 
 exports.updateCountry = async (req, res, next) => {
 	try {
+		const id = req.params.id
 		const updateDetail = req.body
+		// console.log(req.body, id)
 		// res.status(200).json({ req: req.body })
-		if (!updateDetail.id) return next(errObject(400, "Country Id is required to update country details"))
+		if (!id) return next(errObject(400, "Country Id is required to update country details"))
 
-		if (!updateDetail.countryName && !updateDetail.countryCode)
+		if (!updateDetail.countryRegionName && !updateDetail.countryRegionCode)
 			return next(errObject(400, "Country Name & Country Code is required to update country details"))
 
-		const dataToUpdate = {}
-		if (updateDetail.countryName) dataToUpdate.countryRegionName = updateDetail.countryName
-		if (updateDetail.countryCode) dataToUpdate.countryRegionCode = updateDetail.countryCode
-		await countryService.patchCountry(updateDetail.id, dataToUpdate)
-		res.status(200).json({ status: "success", message: `country with ${updateDetail.id} updated successfully` })
+		// const dataToUpdate = {}
+		// if (updateDetail.countryName) dataToUpdate.countryRegionName = updateDetail.countryName
+		// if (updateDetail.countryCode) dataToUpdate.countryRegionCode = updateDetail.countryCode
+		await countryService.patchCountry(id, updateDetail)
+		res.status(200).json({ status: "success", message: `country with ${id} updated successfully` })
 	} catch (error) {
 		next(error)
 	}

@@ -1,6 +1,8 @@
 "use strict"
 
-const { errObject } = require(`${__dirname}/../helpers/helper.js`)
+const { errObject, errorHandler } = require(`${__dirname}/../helpers/helper.js`)
+
+const Manufacturer = require(`${__dirname}/../models/manufacturerModel.js`)
 
 const manufacturerService = require(`${__dirname}/../services/manufacturerService`)
 
@@ -39,19 +41,19 @@ exports.setManufacturer = async (req, res, next) => {
 
 exports.removeManufacturer = async (req, res, next) => {
 	try {
-		const manufacturerId = req.body.id
+		const manufacturerId = req.params.id
 
-		if (!manufacturerId || !manufacturerId.length) {
-			return next(errObject(400, "Manufacturer id cannot be empty"))
-		}
+		// manufacturerId shouldn't be undefined and its length should be greater than 0.
+		if (!manufacturerId || !manufacturerId.length) return next(errObject(400, "Manufacturer id cannot be empty"))
+
+		// if manufacturer is not present throw an error
+		if ((await Manufacturer.find({ _id: manufacturerId })).length === 0)
+			return next(errObject(404, "Manufacturer id is Invalid"))
 
 		await manufacturerService.deleteManufacturer(manufacturerId)
-		res.status(204).json({
-			status: "success",
-			message: `Manufacturer with manufacturerId: ${manufacturerId} deleted successfully`,
-		})
+		res.status(204).json() //204 - No Content: The request was successful, but there is no additional information to send back
 	} catch (error) {
-		next(errObject(400, "can't delete country with manufacturerId: ${manufacturerId}"))
+		next(errObject(400, `can't delete country with manufacturerId: ${manufacturerId}`))
 	}
 }
 
@@ -66,21 +68,29 @@ exports.removeManufacturer = async (req, res, next) => {
 
 exports.updateManufacturer = async (req, res, next) => {
 	try {
-		const updateDetail = req.body
-		// res.status(200).json({ req: req.body })
-		if (!updateDetail.id) return next(errObject(400, "Manufacturer Id is required to update country details"))
+		const updateId = req.params.id
+		const dataToUpdate = req.body
+		await Manufacturer.findOne({ _id: updateId }) // throws Cast to ObjectId failed error if id is not valid
 
-		if (!updateDetail.manufacturerName && !updateDetail.manufacturerCode)
-			return next(errObject(400, "Manufacturer Name & Manufacturer Code is required to update country details"))
+		// console.log(await Manufacturer.findOne({ _id: updateId }))
 
-		const dataToUpdate = {}
-		for (const key in updateDetail) {
-			if (updateDetail[key]) dataToUpdate[key] = updateDetail[key]
-		}
-		// if (updateDetail.manufacturerCode) dataToUpdate.countryRegionCode = updateDetail.manufacturerCode
-		// console.log(dataToUpdate)
-		await manufacturerService.patchManufacturer(updateDetail.id, dataToUpdate)
-		res.status(200).json({ status: "success", message: `country with ${updateDetail.id} updated successfully` })
+		// if updateId is falsy , throw an error
+		if (!updateId) return next(errObject(400, "Manufacturer Id is required to update country details"))
+
+		// if updateData is empty , throw an error
+		if (Object.keys(dataToUpdate).length === 0)
+			return next(errObject(400, "Data is required to update Manufacturer details"))
+
+		// if ((
+		// ).length === 0) {
+		// return next(errObject(400, "Invalid id"))
+		// }
+
+		// if countryCode is present in req body make it uppercase
+		if (dataToUpdate.countryCode) dataToUpdate.countryCode = dataToUpdate.countryCode.toUpperCase()
+
+		await manufacturerService.patchManufacturer(updateId, dataToUpdate)
+		res.status(200).json({ status: "success", message: `Manufacturer with ${updateId} updated successfully` })
 	} catch (error) {
 		next(error)
 	}
