@@ -35,7 +35,7 @@ exports.deleteCountry = async (countryId) => {
 
 exports.patchCountry = async (id, updateData) => {
 	try {
-		console.log(id, updateData)
+		// console.log(id, updateData)
 		return await Country.findByIdAndUpdate({ _id: id }, updateData)
 	} catch (error) {
 		error.statusCode = 400
