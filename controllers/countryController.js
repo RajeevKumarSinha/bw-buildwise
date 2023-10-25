@@ -43,7 +43,7 @@ exports.setCountries = async (req, res, next) => {
 	try {
 		const country = req.body
 		const createdCountry = await countryService.createCountry(country)
-		res.status(201).json({ status: "success", data: createdCountry })
+		res.status(201).json({ status: "success", message: "new country is created.", data: createdCountry })
 	} catch (error) {
 		next(error)
 	}
@@ -64,7 +64,7 @@ exports.removeCountry = async (req, res, next) => {
 
 		// if country id is not present or if length is 0 throw an error
 		if (!countryId || !countryId.length) {
-			return next(errObject(400, "Country id cannot be empty"))
+			return next(errObject("Country id cannot be empty", 400))
 		}
 
 		await countryService.deleteCountry(countryId)
@@ -88,10 +88,10 @@ exports.updateCountry = async (req, res, next) => {
 		const id = req.params.id
 		const updateDetail = req.body
 
-		if (!id) return next(errObject(400, "Country Id is required to update country details"))
+		if (!id) return next(errObject("Country Id is required to update country details", 400))
 
 		if (!updateDetail.countryRegionName && !updateDetail.countryRegionCode)
-			return next(errObject(400, "Country Name & Country Code is required to update country details"))
+			return next(errObject("Country Name & Country Code is required to update country details", 400))
 
 		await countryService.patchCountry(id, updateDetail)
 		res.status(200).json({ status: "success", message: `country with ${id} updated successfully` })

@@ -56,7 +56,7 @@ manufacturerSchema.pre(`findOneAndUpdate`, async function (next) {
 })
 
 manufacturerSchema.pre(`save`, async function (next) {
-	console.log(this)
+	// console.log(this)
 	const country = await Country.findOne({ countryRegionCode: this.countryCode })
 
 	// console.log(country)

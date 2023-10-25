@@ -51,7 +51,7 @@ exports.removeManufacturer = async (req, res, next) => {
 		const manufacturerId = req.params.id
 
 		// manufacturerId shouldn't be undefined and its length should be greater than 0.
-		if (!manufacturerId || !manufacturerId.length) return next(errObject(400, "Manufacturer id cannot be empty"))
+		if (!manufacturerId || !manufacturerId.length) return next(errObject("Manufacturer id cannot be empty", 400))
 
 		// if manufacturer is not present throw an error
 		if ((await Manufacturer.find({ _id: manufacturerId })).length === 0)
@@ -60,7 +60,7 @@ exports.removeManufacturer = async (req, res, next) => {
 		await manufacturerService.deleteManufacturer(manufacturerId)
 		res.status(204).json() //204 - No Content: The request was successful, but there is no additional information to send back
 	} catch (error) {
-		next(errObject(400, `can't delete country with manufacturerId: ${manufacturerId}`))
+		next(errObject(`can't delete country with manufacturerId: ${manufacturerId}`, 400))
 	}
 }
 
@@ -82,11 +82,11 @@ exports.updateManufacturer = async (req, res, next) => {
 		// console.log(await Manufacturer.findOne({ _id: updateId }))
 
 		// if updateId is falsy , throw an error
-		if (!updateId) return next(errObject(400, "Manufacturer Id is required to update country details"))
+		if (!updateId) return next(errObject("Manufacturer Id is required to update country details", 400))
 
 		// if updateData is empty , throw an error
 		if (Object.keys(dataToUpdate).length === 0)
-			return next(errObject(400, "Data is required to update Manufacturer details"))
+			return next(errObject("Data is required to update Manufacturer details", 400))
 
 		// if ((
 		// ).length === 0) {
