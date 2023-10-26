@@ -8,6 +8,7 @@ const dotenv = require("dotenv")
 const countryRouter = require("./routes/countryRoute") // country route path
 const manufacturerRouter = require("./routes/manufacturerRoute") // manufacturer route path
 const productTypeRouter = require("./routes/productTypeRoute") // product route path
+const materialTypeRouter = require("./routes/materialTypeRoute") // material route path
 const { errorHandler } = require(`./helpers/helper.js`)
 
 const morgan = require("morgan") // for development only
@@ -58,7 +59,7 @@ app.use("/manufacturers", manufacturerRouter)
 app.use("/productTypes", productTypeRouter)
 
 // use materials router
-app.use("/materials", materialsRouter)
+app.use("/materialTypes", materialTypeRouter)
 
 app.all("*", (req, res, next) => {
 	const err = new Error(`can't find ${req.originalUrl} on the server`)
