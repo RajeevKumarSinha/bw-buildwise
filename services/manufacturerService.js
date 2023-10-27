@@ -24,9 +24,9 @@ exports.createManufacturer = async (manufacturerData) => {
 	}
 }
 
-exports.deleteManufacturer = async (manufacturerId) => {
+exports.deleteManufacturer = async (idArr) => {
 	try {
-		return await Manufacturer.deleteOne({ _id: manufacturerId })
+		return await Manufacturer.deleteMany({ _id: { $in: idArr } })
 	} catch (error) {
 		error.statusCode = 400
 		error.message = "Invalid Id"

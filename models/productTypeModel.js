@@ -10,6 +10,7 @@ const productSchema = mongoose.Schema({
 	},
 	mainCategory: { type: String, required: true },
 	subCategory: { type: String, required: true },
+	notes: String,
 })
 
 // middleware to handle duplicate data.

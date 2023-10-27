@@ -48,19 +48,19 @@ exports.setManufacturer = async (req, res, next) => {
 
 exports.removeManufacturer = async (req, res, next) => {
 	try {
-		const manufacturerId = req.params.id
+		if (!req.body.ids) return next(errObject("ids not found", 400))
 
-		// manufacturerId shouldn't be undefined and its length should be greater than 0.
-		if (!manufacturerId || !manufacturerId.length) return next(errObject("Manufacturer id cannot be empty", 400))
+		const idArr = req.body.ids
 
-		// if manufacturer is not present throw an error
-		if ((await Manufacturer.find({ _id: manufacturerId })).length === 0)
-			return next(errObject(404, "Manufacturer id is Invalid"))
+		// if idArr length is 0 throw an error
+		if (idArr.length === 0) {
+			return next(errObject("manufacturer ids cannot be empty", 400))
+		}
 
-		await manufacturerService.deleteManufacturer(manufacturerId)
+		await manufacturerService.deleteManufacturer(idArr)
 		res.status(204).json() //204 - No Content: The request was successful, but there is no additional information to send back
 	} catch (error) {
-		next(errObject(`can't delete country with manufacturerId: ${manufacturerId}`, 400))
+		next(errObject(`Can't delete manufacturers with ids array.`, 400))
 	}
 }
 

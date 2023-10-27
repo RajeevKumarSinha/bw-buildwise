@@ -60,17 +60,19 @@ exports.setCountries = async (req, res, next) => {
 
 exports.removeCountry = async (req, res, next) => {
 	try {
-		const countryId = req.params.id
+		if (!req.body.ids) return next(errObject("ids not found", 400))
 
-		// if country id is not present or if length is 0 throw an error
-		if (!countryId || !countryId.length) {
-			return next(errObject("Country id cannot be empty", 400))
+		const idArr = req.body.ids
+
+		// if idArr length is 0 throw an error
+		if (idArr.length === 0) {
+			return next(errObject("Country ids cannot be empty", 400))
 		}
 
-		await countryService.deleteCountry(countryId)
+		await countryService.deleteCountry(idArr)
 		res.status(204).json() //204 - No Content: The request was successful, but there is no additional information to send back
 	} catch (error) {
-		next(errObject(400, "Invalid ID"))
+		next(errObject("Can't delete countries inside ids array", 400))
 	}
 }
 

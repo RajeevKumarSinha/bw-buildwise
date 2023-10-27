@@ -24,9 +24,10 @@ exports.createCountry = async (countryData) => {
 	}
 }
 
-exports.deleteCountry = async (countryId) => {
+exports.deleteCountry = async (idArr) => {
 	try {
-		return await Country.deleteOne({ _id: countryId })
+		// return await Country.deleteOne({ _id: countryId })
+		return await Country.deleteMany({ _id: { $in: idArr } })
 	} catch (error) {
 		error.statusCode = 400
 		throw error // Let the error handler handle it

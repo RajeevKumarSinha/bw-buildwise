@@ -33,9 +33,9 @@ exports.patchProductType = async (id, updateData) => {
 	}
 }
 
-exports.deleteProductType = async (productTypeId) => {
+exports.deleteProductType = async (idArr) => {
 	try {
-		return await ProductType.deleteOne({ _id: productTypeId })
+		return await ProductType.deleteMany({ _id: { $in: idArr } })
 	} catch (error) {
 		error.statusCode = 400
 		throw error // Let the error handler handle it

@@ -1,5 +1,3 @@
-// "use strict"
-
 "use strict"
 
 const express = require("express")
@@ -9,6 +7,8 @@ const countryRouter = require("./routes/countryRoute") // country route path
 const manufacturerRouter = require("./routes/manufacturerRoute") // manufacturer route path
 const productTypeRouter = require("./routes/productTypeRoute") // product route path
 const materialTypeRouter = require("./routes/materialTypeRoute") // material route path
+const masterPipeRouter = require("./routes/masterPipeRoute") // master route path
+
 const { errorHandler } = require(`./helpers/helper.js`)
 
 const morgan = require("morgan") // for development only
@@ -60,6 +60,9 @@ app.use("/productTypes", productTypeRouter)
 
 // use materials router
 app.use("/materialTypes", materialTypeRouter)
+
+// use masterPipe router
+app.use("/masterPipes", masterPipeRouter)
 
 app.all("*", (req, res, next) => {
 	const err = new Error(`can't find ${req.originalUrl} on the server`)

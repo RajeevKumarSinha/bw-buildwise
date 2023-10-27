@@ -24,9 +24,9 @@ exports.createMaterialType = async (materialTypeData) => {
 	}
 }
 
-exports.deleteMaterialType = async (idArr) => {
+exports.deleteMaterialType = async (materialTypeId) => {
 	try {
-		return await MaterialType.deleteMany({ _id: { $in: idArr } })
+		return await MaterialType.deleteOne({ _id: materialTypeId })
 	} catch (error) {
 		error.statusCode = 400
 		throw error // Let the error handler handle it

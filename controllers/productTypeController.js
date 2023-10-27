@@ -56,16 +56,18 @@ exports.updateProductType = async (req, res, next) => {
 }
 exports.removeProductType = async (req, res, next) => {
 	try {
-		const productTypeId = req.params.id
+		if (!req.body.ids) return next(errObject("ids not found", 400))
 
-		// if productType id is not present or if length is 0 throw an error
-		if (!productTypeId || !productTypeId.length) {
-			return next(errObject("ProductType id cannot be empty", 400))
+		const idArr = req.body.ids
+
+		// if idArr length is 0 throw an error
+		if (idArr.length === 0) {
+			return next(errObject("ProductType ids array cannot be empty", 400))
 		}
 
-		await productTypeService.deleteProductType(productTypeId)
+		await productTypeService.deleteProductType(idArr)
 		res.status(204).json() //204 - No Content: The request was successful, but there is no additional information to send back
 	} catch (error) {
-		next(errObject(400, "Invalid ID"))
+		next(errObject("Can't delete ids array", 400))
 	}
 }

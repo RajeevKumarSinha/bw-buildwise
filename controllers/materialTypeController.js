@@ -60,17 +60,19 @@ exports.setMaterialType = async (req, res, next) => {
 
 exports.removeMaterialType = async (req, res, next) => {
 	try {
-		const materialTypeId = req.params.id
+		if (!req.body.ids) return next(errObject("ids not found", 400))
 
-		// if materialType id is not present or if length is 0 throw an error
-		if (!materialTypeId || !materialTypeId.length) {
-			return next(errObject("MaterialType id cannot be empty", 400))
+		const idArr = req.body.ids
+
+		// if materialType ids is 0 throw an error
+		if (idArr.length === 0) {
+			return next(errObject("MaterialType ids array cannot be empty", 400))
 		}
 
-		await materialTypeService.deleteMaterialType(materialTypeId)
+		await materialTypeService.deleteMaterialType(idArr)
 		res.status(204).json() //204 - No Content: The request was successful, but there is no additional information to send back
 	} catch (error) {
-		next(errObject(400, "Invalid ID"))
+		next(errObject("Can't delete materialtype arrays", 400))
 	}
 }
 
