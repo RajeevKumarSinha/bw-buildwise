@@ -13,11 +13,18 @@ exports.createProductType = async (dataProd) => {
 
 exports.getPagedProductTypes = async (pageNo, docsPerPage) => {
 	try {
+		const totalDocs = await ProductType.countDocuments()
+
 		const productTypes = await ProductType.find()
 			.skip(pageNo * docsPerPage)
 			.limit(docsPerPage)
 
-		return productTypes
+		const response = {
+			total: totalDocs,
+			productTypes,
+		}
+
+		return response
 	} catch (error) {
 		throw error // Let the error handler handle it
 	}

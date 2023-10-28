@@ -2,8 +2,6 @@
 
 const { errObject, errorHandler } = require(`${__dirname}/../helpers/helper.js`)
 
-const Manufacturer = require(`${__dirname}/../models/manufacturerModel.js`)
-
 const manufacturerService = require(`${__dirname}/../services/manufacturerService`)
 
 exports.getManufacturers = async (req, res, next) => {
@@ -11,13 +9,7 @@ exports.getManufacturers = async (req, res, next) => {
 		const pageNo = parseInt(req.query.pageNo) || 0
 		const docsPerPage = parseInt(req.query.docsPerPage) || 10
 
-		const totalDocs = await Manufacturer.countDocuments()
-		const manufacturers = await manufacturerService.getPagedManufacturer(pageNo, docsPerPage)
-
-		const response = {
-			total: totalDocs,
-			manufacturers,
-		}
+		const response = await manufacturerService.getPagedManufacturer(pageNo, docsPerPage)
 
 		res.status(200).json(response)
 	} catch (error) {
@@ -31,7 +23,7 @@ exports.setManufacturer = async (req, res, next) => {
 	try {
 		const manufacturerObj = req.body
 		const createdManufacturer = await manufacturerService.createManufacturer(manufacturerObj)
-		res.status(201).json({ status: "success", data: createdManufacturer })
+		res.status(201).json({ status: "success",message:"Manufacturer created Successfully", data: createdManufacturer })
 	} catch (error) {
 		next(error)
 	}
@@ -77,9 +69,6 @@ exports.updateManufacturer = async (req, res, next) => {
 	try {
 		const updateId = req.params.id
 		const dataToUpdate = req.body
-		await Manufacturer.findOne({ _id: updateId }) // throws Cast to ObjectId failed error if id is not valid
-
-		// console.log(await Manufacturer.findOne({ _id: updateId }))
 
 		// if updateId is falsy , throw an error
 		if (!updateId) return next(errObject("Manufacturer Id is required to update country details", 400))
@@ -88,17 +77,13 @@ exports.updateManufacturer = async (req, res, next) => {
 		if (Object.keys(dataToUpdate).length === 0)
 			return next(errObject("Data is required to update Manufacturer details", 400))
 
-		// if ((
-		// ).length === 0) {
-		// return next(errObject(400, "Invalid id"))
-		// }
-
 		// if countryCode is present in req body make it uppercase
 		if (dataToUpdate.countryCode) dataToUpdate.countryCode = dataToUpdate.countryCode.toUpperCase()
 
 		await manufacturerService.patchManufacturer(updateId, dataToUpdate)
-		res.status(200).json({ status: "success", message: `Manufacturer with ${updateId} updated successfully` })
+		res.status(200).json({ status: "success", message: `Manufacturer updated successfully` })
 	} catch (error) {
+		console.log("ohnoo")
 		next(error)
 	}
 }

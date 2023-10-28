@@ -2,8 +2,6 @@
 
 const { errObject } = require(`${__dirname}/../helpers/helper.js`)
 
-const Country = require(`${__dirname}/../models/countryModel.js`)
-
 const countryService = require(`${__dirname}/../services/countryService`)
 
 exports.getCountries = async (req, res, next) => {
@@ -24,18 +22,13 @@ exports.getCountries = async (req, res, next) => {
 		// }
 		///////////////////////////////////////////////////////////////////////////
 
-		const totalDocs = await Country.countDocuments()
-		const countries = await countryService.getPagedCountries(pageNo, docsPerPage)
-
-		const response = {
-			total: totalDocs,
-			countries,
-		}
+		//  never write query in controller , it should be inside service✅
+		const response = await countryService.getPagedCountries(pageNo, docsPerPage)
 
 		res.status(200).json(response)
 	} catch (error) {
 		// Pass the error to the next middleware for centralized error handling
-		next(errObject("Error while fetching countries"))
+		next(error)
 	}
 }
 
@@ -43,7 +36,7 @@ exports.setCountries = async (req, res, next) => {
 	try {
 		const country = req.body
 		const createdCountry = await countryService.createCountry(country)
-		res.status(201).json({ status: "success", message: "new country is created.", data: createdCountry })
+		res.status(201).json({ status: "success", message: "Country created Succesfully", data: createdCountry })
 	} catch (error) {
 		next(error)
 	}
@@ -60,19 +53,19 @@ exports.setCountries = async (req, res, next) => {
 
 exports.removeCountry = async (req, res, next) => {
 	try {
-		if (!req.body.ids) return next(errObject("ids not found", 400))
+		if (!req.body.ids) return next(errObject("Cannot remove country with invalid ID", 400))
 
 		const idArr = req.body.ids
 
 		// if idArr length is 0 throw an error
 		if (idArr.length === 0) {
-			return next(errObject("Country ids cannot be empty", 400))
+			return next(errObject("Country ids cannot be empty.", 400))
 		}
 
 		await countryService.deleteCountry(idArr)
 		res.status(204).json() //204 - No Content: The request was successful, but there is no additional information to send back
 	} catch (error) {
-		next(errObject("Can't delete countries inside ids array", 400))
+		next(error)
 	}
 }
 
@@ -87,17 +80,23 @@ exports.removeCountry = async (req, res, next) => {
 
 exports.updateCountry = async (req, res, next) => {
 	try {
-		const id = req.params.id
-		const updateDetail = req.body
+		const id = req.params.id // Get the country ID from the request parameters.
+		const updateDetail = req.body // Get the update details from the request body.
 
+		// Check if the country ID is provided; if not, send a 400 Bad Request response.
 		if (!id) return next(errObject("Country Id is required to update country details", 400))
 
+		// if both the country name or country code is not present, throw an error.
 		if (!updateDetail.countryRegionName && !updateDetail.countryRegionCode)
 			return next(errObject("Country Name & Country Code is required to update country details", 400))
 
+		// Use the countryService to update the country details.
 		await countryService.patchCountry(id, updateDetail)
-		res.status(200).json({ status: "success", message: `country with ${id} updated successfully` })
+
+		// Send a 200 OK response indicating a successful update.
+		res.status(200).json({ status: "success", message: `Country updated successfully.` })
 	} catch (error) {
+		// If an error occurs, pass it to the error-handling middleware.
 		next(error)
 	}
 }

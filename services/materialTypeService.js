@@ -4,11 +4,17 @@ const MaterialType = require("../models/materialTypeModel")
 
 exports.getPagedMaterialTypes = async (pageNo, docsPerPage) => {
 	try {
-		const countries = await MaterialType.find()
+		const totalDocs = await MaterialType.countDocuments()
+		const materialTypesData = await MaterialType.find()
 			.skip(pageNo * docsPerPage)
 			.limit(docsPerPage)
 
-		return countries
+		const response = {
+			total: totalDocs,
+			materialTypesData,
+		}
+
+		return response
 	} catch (error) {
 		throw error // Let the error handler handle it
 	}

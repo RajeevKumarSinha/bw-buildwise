@@ -1,44 +1,47 @@
 "use strict"
 
-const MaterialType = require("../models/materialTypeModel")
+const MasterPipe = require("../models/masterPipeModel")
 
-exports.getPagedMaterialTypes = async (pageNo, docsPerPage) => {
+exports.getPagedMasterPipes = async (pageNo, docsPerPage) => {
 	try {
-		const countries = await MaterialType.find()
+		const totalDocs = await MasterPipe.countDocuments()
+		const masterPipesData = await MasterPipe.find()
 			.skip(pageNo * docsPerPage)
 			.limit(docsPerPage)
 
-		return countries
+		const response = {
+			total: totalDocs,
+			masterPipesData,
+		}
+
+		return response
 	} catch (error) {
 		throw error // Let the error handler handle it
 	}
 }
 
-exports.createMaterialType = async (materialTypeData) => {
+exports.createMasterPipe = async (masterPipeData) => {
 	try {
-		const materialTypeObj = await MaterialType.create(materialTypeData)
-		return materialTypeObj
+		const masterPipeObj = await MasterPipe.create(masterPipeData)
+		return masterPipeObj
 	} catch (error) {
-		error.statusCode = 400
 		throw error
 	}
 }
 
-exports.deleteMaterialType = async (materialTypeId) => {
+exports.deleteMasterPipe = async (idArr) => {
 	try {
-		return await MaterialType.deleteOne({ _id: materialTypeId })
+		return await MasterPipe.deleteMany({ _id: { $in: idArr } })
 	} catch (error) {
-		error.statusCode = 400
 		throw error // Let the error handler handle it
 	}
 }
 
-exports.patchMaterialType = async (id, updateData) => {
+exports.patchMasterPipe = async (id, updateData) => {
 	try {
 		// console.log(id, updateData)
-		return await MaterialType.findByIdAndUpdate({ _id: id }, updateData)
+		return await MasterPipe.findByIdAndUpdate({ _id: id }, updateData)
 	} catch (error) {
-		error.statusCode = 400
 		throw error // Let the error handler handle it
 	}
 }

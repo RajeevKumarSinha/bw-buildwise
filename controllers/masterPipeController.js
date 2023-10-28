@@ -2,8 +2,6 @@
 
 const { errObject } = require(`${__dirname}/../helpers/helper.js`)
 
-const MasterPipe = require(`${__dirname}/../models/masterPipeModel.js`)
-
 const masterPipeService = require(`${__dirname}/../services/masterPipeService`)
 
 exports.getMasterPipes = async (req, res, next) => {
@@ -24,13 +22,7 @@ exports.getMasterPipes = async (req, res, next) => {
 		// }
 		///////////////////////////////////////////////////////////////////////////
 
-		const totalDocs = await MasterPipe.countDocuments()
-		const masterPipesData = await masterPipeService.getPagedMasterPipes(pageNo, docsPerPage)
-
-		const response = {
-			total: totalDocs,
-			masterPipesData,
-		}
+		const response = await masterPipeService.getPagedMasterPipes(pageNo, docsPerPage)
 
 		res.status(200).json(response)
 	} catch (error) {
@@ -43,7 +35,11 @@ exports.setMasterPipe = async (req, res, next) => {
 	try {
 		const masterPipeReq = req.body
 		const createdMasterPipeObj = await masterPipeService.createMasterPipe(masterPipeReq)
-		res.status(201).json({ status: "success", message: "new masterPipe is created.", data: createdMasterPipeObj })
+		res.status(201).json({
+			status: "success",
+			message: "New master pipe created successfuly.",
+			data: createdMasterPipeObj,
+		})
 	} catch (error) {
 		next(error)
 	}
@@ -88,6 +84,7 @@ exports.removeMasterPipe = async (req, res, next) => {
 exports.updateMasterPipe = async (req, res, next) => {
 	try {
 		const id = req.params.id
+
 		const updateDetail = req.body
 
 		if (!id) return next(errObject("MasterPipe Id is required to update masterPipe details", 400))
@@ -95,8 +92,8 @@ exports.updateMasterPipe = async (req, res, next) => {
 		if (Object.keys(updateDetail).length === 0)
 			return next(errObject("masterPipe update details Can't be empty.", 400))
 
-		await masterPipeService.patchMaterialType(id, updateDetail)
-		res.status(200).json({ status: "success", message: `masterPipe with ${id} updated successfully` })
+		await masterPipeService.patchMasterPipe(id, updateDetail)
+		res.status(200).json({ status: "success", message: `Master pipe updated successfully.` })
 	} catch (error) {
 		next(error)
 	}

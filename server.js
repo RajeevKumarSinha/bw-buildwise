@@ -24,7 +24,7 @@ app.use(express.json())
 // the browser performs a preflight check to determine whether the requested domain allows cross-origin requests.
 app.use(function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*") // Update this with your desired domain
-	res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE")
+	res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,")
 	res.header("Access-Control-Allow-Headers", "Content-Type")
 	next()
 })
@@ -72,3 +72,9 @@ app.all("*", (req, res, next) => {
 })
 
 app.use(errorHandler)
+
+// Tasks
+
+// mongod kya h, background me kitna chalta h , 2 chala sakte h
+// document sahi karna h
+// add karna h examples postman me

@@ -2,8 +2,6 @@
 
 const { errObject } = require(`${__dirname}/../helpers/helper.js`)
 
-const ProductType = require(`${__dirname}/../models/productTypeModel.js`)
-
 const productTypeService = require(`${__dirname}/../services/productTypeService.js`)
 
 exports.setProductType = async (req, res, next) => {
@@ -14,7 +12,9 @@ exports.setProductType = async (req, res, next) => {
 				errObject("masterCategory & mainCategory & subCategory are required to add a new ProductType", 400)
 			)
 		const addedProdType = await productTypeService.createProductType(dataProd)
-		return res.status(201).json({ status: "success", message: "A new ProductType is added.", data: addedProdType })
+		return res
+			.status(201)
+			.json({ status: "success", message: "New product type added successfully.", data: addedProdType })
 	} catch (error) {
 		next(error)
 	}
@@ -24,13 +24,8 @@ exports.getProductType = async (req, res, next) => {
 	try {
 		const pageNo = parseInt(req.query.pageNo) || 0
 		const docsPerPage = parseInt(req.query.docsPerPage) || 10
-		const totalDocs = await ProductType.countDocuments()
-		const productTypes = await productTypeService.getPagedProductTypes(pageNo, docsPerPage)
 
-		const response = {
-			total: totalDocs,
-			productTypes,
-		}
+		const response = await productTypeService.getPagedProductTypes(pageNo, docsPerPage)
 
 		res.status(200).json(response)
 	} catch (error) {
@@ -49,7 +44,7 @@ exports.updateProductType = async (req, res, next) => {
 			return next(errObject("ProductType request body can't be empty.", 400))
 
 		await productTypeService.patchProductType(id, updateDetail)
-		res.status(200).json({ status: "success", message: `ProuductType with ${id} updated successfully` })
+		res.status(200).json({ status: "success", message: `Prouduct type updated successfully.` })
 	} catch (error) {
 		next(error)
 	}

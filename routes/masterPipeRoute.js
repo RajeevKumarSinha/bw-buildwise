@@ -1,17 +1,17 @@
 "use strict"
 
 const express = require("express")
-const materialRouter = express.Router()
-const materialTypeController = require(`${__dirname}/../controllers/materialTypeController`) // Check the path to the controller
+const masterPipeRouter = express.Router()
+const masterPipeController = require(`${__dirname}/../controllers/masterPipeController`) // Check the path to the controller
 // const upload = require("../helpers/bwHelper")
 
-materialRouter
+masterPipeRouter
 	.route("/")
-	.get(materialTypeController.getMaterialTypes)
-	.post(materialTypeController.setMaterialType)
-	.delete(materialTypeController.removeMaterialType)
+	.get(masterPipeController.getMasterPipes)
+	.post(masterPipeController.setMasterPipe)
+	.delete(masterPipeController.removeMasterPipe)
 
-materialRouter.route("/:id").patch(materialTypeController.updateMaterialType)
-// materialRouter.route("/import", upload.single("file")).post(materialTypeController.importCountries)
+masterPipeRouter.route("/:id").patch(masterPipeController.updateMasterPipe)
+// masterPipeRouter.route("/import", upload.single("file")).post(masterPipeController.importCountries)
 
-module.exports = materialRouter
+module.exports = masterPipeRouter

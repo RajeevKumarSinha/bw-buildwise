@@ -2,8 +2,6 @@
 
 const { errObject } = require(`${__dirname}/../helpers/helper.js`)
 
-const MaterialType = require(`${__dirname}/../models/materialTypeModel.js`)
-
 const materialTypeService = require(`${__dirname}/../services/materialTypeService`)
 
 exports.getMaterialTypes = async (req, res, next) => {
@@ -24,13 +22,7 @@ exports.getMaterialTypes = async (req, res, next) => {
 		// }
 		///////////////////////////////////////////////////////////////////////////
 
-		const totalDocs = await MaterialType.countDocuments()
-		const materialTypesData = await materialTypeService.getPagedMaterialTypes(pageNo, docsPerPage)
-
-		const response = {
-			total: totalDocs,
-			materialTypesData,
-		}
+		const response = await materialTypeService.getPagedMaterialTypes(pageNo, docsPerPage)
 
 		res.status(200).json(response)
 	} catch (error) {
@@ -43,7 +35,11 @@ exports.setMaterialType = async (req, res, next) => {
 	try {
 		const materialTypeReq = req.body
 		const createdMaterialObj = await materialTypeService.createMaterialType(materialTypeReq)
-		res.status(201).json({ status: "success", message: "new materialType is created.", data: createdMaterialObj })
+		res.status(201).json({
+			status: "success",
+			message: "New material type data is created successfully.",
+			data: createdMaterialObj,
+		})
 	} catch (error) {
 		next(error)
 	}
@@ -98,7 +94,7 @@ exports.updateMaterialType = async (req, res, next) => {
 			)
 
 		await materialTypeService.patchMaterialType(id, updateDetail)
-		res.status(200).json({ status: "success", message: `materialType with ${id} updated successfully` })
+		res.status(200).json({ status: "success", message: `Material type updated successfully.` })
 	} catch (error) {
 		next(error)
 	}
