@@ -8,6 +8,7 @@ const manufacturerRouter = require("./routes/manufacturerRoute") // manufacturer
 const productTypeRouter = require("./routes/productTypeRoute") // product route path
 const materialTypeRouter = require("./routes/materialTypeRoute") // material route path
 const masterPipeRouter = require("./routes/masterPipeRoute") // master route path
+const connectionTypeRouter = require("./routes/connectionTypeRoute") // connections route path
 
 const { errorHandler } = require(`./helpers/helper.js`)
 
@@ -24,7 +25,7 @@ app.use(express.json())
 // the browser performs a preflight check to determine whether the requested domain allows cross-origin requests.
 app.use(function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*") // Update this with your desired domain
-	res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,")
+	res.header("Access-Control-Allow-Methods", "GET,POST,DELETE,PATCH")
 	res.header("Access-Control-Allow-Headers", "Content-Type")
 	next()
 })
@@ -63,6 +64,9 @@ app.use("/materialTypes", materialTypeRouter)
 
 // use masterPipe router
 app.use("/masterPipes", masterPipeRouter)
+
+// use connections router
+app.use("/connectionTypes", connectionTypeRouter)
 
 app.all("*", (req, res, next) => {
 	const err = new Error(`can't find ${req.originalUrl} on the server`)
