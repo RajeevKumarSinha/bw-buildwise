@@ -3,6 +3,10 @@
 const GenericPipe = require("../models/genericPipeModel")
 const { errObject } = require(`${__dirname}/../helpers/helper`)
 
+// we get unitType as inches and sizes array with ids for reference.
+// 1. change add pipes to save array of ids in sizes.✅
+// 2. change get pipes to get the referenced data derived from the ids of sizes from master pipe.
+
 exports.getPagedGenericPipes = async (pageNo, docsPerPage) => {
 	try {
 		const totalDocs = await GenericPipe.countDocuments()

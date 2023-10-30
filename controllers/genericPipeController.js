@@ -8,20 +8,6 @@ exports.getGenericPipes = async (req, res, next) => {
 	try {
 		const pageNo = parseInt(req.query.pageNo) || 0
 		const docsPerPage = parseInt(req.query.docsPerPage) || 10
-
-		//////////////////////////////////////////////////////////////fuzzy search on hold.
-		// const searchQuery = req.query.search || "" // Change to your specific query parameter name
-
-		// Build a dynamic query for the fuzzy search
-		// const query = {
-		// 	$or: [
-		// 		{ property1: { $regex: searchQuery, $options: "i" } }, // Adjust property names
-		// 		{ property2: { $regex: searchQuery, $options: "i" } },
-		// 		// Add more properties as needed
-		// 	],
-		// }
-		///////////////////////////////////////////////////////////////////////////
-
 		const response = await genericPipeService.getPagedGenericPipes(pageNo, docsPerPage)
 
 		res.status(200).json(response)
@@ -34,6 +20,7 @@ exports.getGenericPipes = async (req, res, next) => {
 exports.setGenericPipe = async (req, res, next) => {
 	try {
 		const genericPipeReq = req.body
+		// console.log(genericPipeReq)
 		const createdGenericPipeObj = await genericPipeService.createGenericPipe(genericPipeReq)
 		res.status(201).json({
 			status: "success",

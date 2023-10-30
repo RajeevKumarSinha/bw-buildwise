@@ -15,7 +15,7 @@ const productSchema = mongoose.Schema({
 
 // middleware to handle duplicate data.
 productSchema.pre("save", async function (next) {
-	const reqBody = structuredClone(this._doc)
+	const reqBody = { ...this._doc }
 	delete reqBody._id
 	const product = await ProductType.find(reqBody)
 	if (product.length === 0) return next()

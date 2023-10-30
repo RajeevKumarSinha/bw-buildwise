@@ -15,10 +15,12 @@ const genericPipeSchema = new mongoose.Schema({
 		required: true,
 		enum: ["mm", "inches"],
 	},
-	sizes: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "MasterPipe",
-	},
+	sizes: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "MasterPipe",
+		},
+	],
 })
 
 const GenericPipe = mongoose.model("GenericPipe", genericPipeSchema)
