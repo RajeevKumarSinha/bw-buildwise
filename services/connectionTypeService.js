@@ -6,13 +6,13 @@ const { errObject } = require(`${__dirname}/../helpers/helper`)
 exports.getPagedConnectionTypes = async (pageNo, docsPerPage) => {
 	try {
 		const totalDocs = await ConnectionType.countDocuments()
-		const connectionsData = await ConnectionType.find()
+		const connectionsTypes = await ConnectionType.find()
 			.skip(pageNo * docsPerPage)
 			.limit(docsPerPage)
 
 		const response = {
 			total: totalDocs,
-			connectionsData,
+			connectionsTypes,
 		}
 
 		return response
