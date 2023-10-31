@@ -41,7 +41,9 @@ exports.setConnectionType = async (req, res, next) => {
 			data: createdConnectionObj,
 		})
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		throw errObject("A connection with the same name or code already exists.", 400)
 	}
 }
 
@@ -95,6 +97,8 @@ exports.updateConnectionType = async (req, res, next) => {
 		await connectionTypeService.patchConnectionType(id, updateDetail)
 		res.status(200).json({ status: "success", message: `Connection updated successfully.` })
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		throw errObject("A connection with the same name or code already exists.", 400)
 	}
 }

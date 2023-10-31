@@ -74,7 +74,7 @@ manufacturerSchema.pre(`findOneAndUpdate`, async function (next) {
 manufacturerSchema.pre(`save`, async function (next) {
 	// add try catch here and reduce nesting❌
 	// console.log(this)
-	const country = await Country.findOne({ countryRegionCode: this.countryCode })
+	const country = await Country.findOne({ countryRegionCode: this.countryCode }) // if written under try throws error in case and we are unable to handle its error.
 
 	// console.log(country)
 	if (!country) return next(errObject(`Country not found`, 404))

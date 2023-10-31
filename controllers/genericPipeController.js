@@ -28,7 +28,9 @@ exports.setGenericPipe = async (req, res, next) => {
 			data: createdGenericPipeObj,
 		})
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		next(errObject("A generic pipe with the same data already exists.", 400))
 	}
 }
 
@@ -82,6 +84,7 @@ exports.updateGenericPipe = async (req, res, next) => {
 		await genericPipeService.patchGenericPipe(id, updateDetail)
 		res.status(200).json({ status: "success", message: `GenericPipe updated successfully.` })
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+		next(errObject("A generic pipe with the same data already exists.", 400))
 	}
 }

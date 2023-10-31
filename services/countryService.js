@@ -5,41 +5,27 @@ const Country = require("../models/countryModel")
 const { errObject } = require(`${__dirname}/../helpers/helper.js`)
 
 exports.getPagedCountries = async (pageNo, docsPerPage) => {
-	try {
-		const totalDocs = await Country.countDocuments()
-		const countries = await Country.find()
-			.skip(pageNo * docsPerPage)
-			.limit(docsPerPage)
+	const totalDocs = await Country.countDocuments()
+	const countries = await Country.find()
+		.skip(pageNo * docsPerPage)
+		.limit(docsPerPage)
 
-		const response = {
-			total: totalDocs,
-			countries,
-		}
-
-		return response
-	} catch (error) {
-		throw error // Let the error handler handle it
+	const response = {
+		total: totalDocs,
+		countries,
 	}
+
+	return response
 }
 
 exports.createCountry = async (countryData) => {
-	try {
-		const country = await Country.create(countryData)
-		return country
-	} catch (error) {
-		error.statusCode = 400
-		throw error
-	}
+	const country = await Country.create(countryData)
+	return country
 }
 
 exports.deleteCountry = async (idArr) => {
-	try {
-		// return await Country.deleteOne({ _id: countryId })
-		return await Country.deleteMany({ _id: { $in: idArr } })
-	} catch (error) {
-		error.statusCode = 400
-		throw error // Let the error handler handle it
-	}
+	// return await Country.deleteOne({ _id: countryId })
+	return await Country.deleteMany({ _id: { $in: idArr } })
 }
 
 exports.patchCountry = async (id, updateData) => {
@@ -48,10 +34,5 @@ exports.patchCountry = async (id, updateData) => {
 
 	// if country with given id is not present then throw error
 	if (!isPresent) throw errObject("Invalid Id", 400)
-	try {
-		return await Country.findByIdAndUpdate({ _id: id }, updateData)
-	} catch (error) {
-		error.statusCode = 400
-		throw error // Let the error handler handle it
-	}
+	return await Country.findByIdAndUpdate({ _id: id }, updateData)
 }

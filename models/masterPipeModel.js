@@ -27,7 +27,7 @@ const masterPipeSchema = new mongoose.Schema({
 
 // Middleware function triggered before saving the document
 masterPipeSchema.pre("save", async function (next) {
-	console.log(this)
+	// console.log(this)
 	// when both inches & mm value is not present throw an error
 	if (!this.odInches && !this.odMm) return next(errObject("Atleast one of odInches or odMm must be specified", 400))
 
@@ -44,7 +44,7 @@ masterPipeSchema.pre("save", async function (next) {
 	// Create a clone of the current document and delete the _id property
 	const copyOfthis = { ...this._doc }
 	delete copyOfthis._id
-	console.log(copyOfthis)
+	// console.log(copyOfthis)
 
 	// Check if there are any documents with the same details as the current one in the database
 	const isPresent = await MasterPipe.find(copyOfthis)
@@ -62,7 +62,7 @@ masterPipeSchema.pre("findOneAndUpdate", async function (next) {
 
 	// check if any document with same detail already exists in db
 	const isPresent = await MasterPipe.find(currentDoc)
-	console.log(isPresent)
+	// console.log(isPresent)
 	// if there is any document with same detail, throw error
 	if (isPresent.length !== 0) return next(errObject("masterPpipe with this detail already exists in db.", 400))
 

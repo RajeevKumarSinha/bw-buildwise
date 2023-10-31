@@ -59,15 +59,14 @@ exports.removeMasterPipe = async (req, res, next) => {
 		if (!req.body.ids) return next(errObject("ids not found", 400))
 
 		const idArr = req.body.ids
-		console.log(idArr)
+		// console.log(idArr)
 
 		// if masterPipe ids length is 0 throw an error
 		if (idArr.length === 0) {
 			return next(errObject("MasterPipe ids array cannot be empty", 400))
 		}
 
-		const x = await masterPipeService.deleteMasterPipe(idArr)
-		console.log(x)
+		await masterPipeService.deleteMasterPipe(idArr)
 		res.status(204).json() //204 - No Content: The request was successful, but there is no additional information to send back
 	} catch (error) {
 		next(errObject("Can't delete masterPipe arrays", 400))

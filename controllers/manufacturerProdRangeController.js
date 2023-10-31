@@ -30,7 +30,9 @@ exports.setManufacturerProdRange = async (req, res, next) => {
 			data: createdManufacturerProdRangeObj,
 		})
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		throw errObject("A manufacturer product range with the same data already exists.", 400)
 	}
 }
 
@@ -84,6 +86,8 @@ exports.updateManufacturerProdRange = async (req, res, next) => {
 		await manufacturerProdRangeService.patchManufacturerProdRange(id, updateDetail)
 		res.status(200).json({ status: "success", message: `manufacturerProdRange updated successfully.` })
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		throw errObject("A manufacturer product range with the same data already exists.", 400)
 	}
 }
