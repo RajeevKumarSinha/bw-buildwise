@@ -41,4 +41,27 @@ const errObject = (message, statusCode = null) => {
 	return err
 }
 
-module.exports = { errorHandler, errObject }
+function titleCase(inputString) {
+	let titleCased = ""
+	let capitalizeNext = true // Flag to capitalize the next character
+
+	for (let i = 0; i < inputString.length; i++) {
+		const char = inputString[i]
+
+		if (char === " ") {
+			// If the character is a space, set the flag to capitalize the next character
+			capitalizeNext = true
+		} else if (capitalizeNext) {
+			// If the flag is set, capitalize the current character
+			titleCased += char.toUpperCase()
+			capitalizeNext = false // Reset the flag
+		} else {
+			// Otherwise, add the character in lowercase
+			titleCased += char.toLowerCase()
+		}
+	}
+
+	return titleCased
+}
+
+module.exports = { errorHandler, errObject, titleCase }

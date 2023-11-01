@@ -6,13 +6,13 @@ const { errObject } = require(`${__dirname}/../helpers/helper.js`)
 
 exports.getPagedCountries = async (pageNo, docsPerPage) => {
 	const totalDocs = await Country.countDocuments()
-	const countries = await Country.find()
+	const countriesData = await Country.find()
 		.skip(pageNo * docsPerPage)
 		.limit(docsPerPage)
 
 	const response = {
 		total: totalDocs,
-		countries,
+		countriesData,
 	}
 
 	return response

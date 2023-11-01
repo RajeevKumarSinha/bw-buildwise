@@ -40,33 +40,16 @@ manufacturerSchema.pre(`findOneAndUpdate`, async function (next) {
 	// if countryCode is not present, proceed to next middleware.
 	if (!this._update.countryCode) return next()
 
-	const manufacturer = await Manufacturer.findOne({ _id: this._conditions._id._id }) // handle its error here❌
-	// ☑️Since we are awaiting the same manufacturer which is being updated, so it already exists and we don't need to handle
-	// ☑️error for it, we are just fetching it to compare against new countrycode and region name which is passed by client.
-
-	// if present country code and countryCode from update object are equal, then
+	const manufacturer = await Manufacturer.findOne({ _id: this._conditions._id._id })
 	if (manufacturer.country.countryRegionCode === this._update.countryRegionCode) return next()
 
 	//fetch country with the new countryCode
 	const country = await Country.findOne({ countryRegionCode: this._update.countryCode })
 	if (!country) return next(errObject("Provided country code is not available in the country List.", 400))
 
-	try {
-		// Check if `manufacturer` exists and if the `countryRegionCode` of the existing manufacturer
-		// is different from the new `countryCode` provided in the update (this._update.countryCode).
-		// if (manufacturer && manufacturer.country.countryRegionCode !== this._update.countryCode) {
-		// const country = await Country.findOne({ countryRegionCode: this._update.countryCode }) // handle its error here❌
-		// this._update.countryCode = country.countryRegionCode // Update the countryCode field with the countryRegionCode
-		// this._update.country = country // Update the country with new country.
-		// return next()
-		// }
-
-		this._update.countryCode = country.countryRegionCode // Update the countryCode field with the countryRegionCode
-		this._update.country = country // Update the country with new country.
-		return next()
-	} catch (error) {
-		next(error)
-	}
+	this._update.countryCode = country.countryRegionCode // Update the countryCode field with the countryRegionCode
+	this._update.country = country // Update the country with new country.
+	return next()
 })
 
 // Before saving the manufacturer, find the corresponding country and get its countryRegionCode
