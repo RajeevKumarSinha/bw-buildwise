@@ -5,7 +5,7 @@ const { errObject } = require(`${__dirname}/../helpers/helper`)
 
 exports.getPagedManufacturerProdRanges = async (pageNo, docsPerPage) => {
 	const totalDocs = await ManufacturerProdRange.countDocuments()
-	const genericPipeData = await ManufacturerProdRange.find()
+	const genericPipeSystemsData = await ManufacturerProdRange.find()
 		.populate("manufacturer")
 		.populate("productType")
 		.populate("materialType")
@@ -16,7 +16,7 @@ exports.getPagedManufacturerProdRanges = async (pageNo, docsPerPage) => {
 
 	const response = {
 		total: totalDocs,
-		genericPipeData,
+		genericPipeSystemsData,
 	}
 
 	return response

@@ -5,13 +5,13 @@ const Manufacturer = require("../models/manufacturerModel")
 
 exports.getPagedManufacturer = async (pageNo, docsPerPage) => {
 	const totalDocs = await Manufacturer.countDocuments()
-	const manufacturers = await Manufacturer.find()
+	const manufacturersData = await Manufacturer.find()
 		.skip(pageNo * docsPerPage)
 		.limit(docsPerPage)
 
 	const response = {
 		total: totalDocs,
-		manufacturers,
+		manufacturersData,
 	}
 	return response
 }
