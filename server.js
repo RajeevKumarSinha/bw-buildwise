@@ -9,6 +9,8 @@ const productTypeRouter = require("./routes/productTypeRoute") // product route 
 const materialTypeRouter = require("./routes/materialTypeRoute") // material route path
 const masterPipeRouter = require("./routes/masterPipeRoute") // master route path
 const connectionTypeRouter = require("./routes/connectionTypeRoute") // connections route path
+const genericPipeRouter = require("./routes/genericPipeRoute") // generic route path
+const manufacturerProdRangeRouter = require("./routes/manufacturerProdRangeRoute") // manufacturerProdRange route path
 
 const { errorHandler } = require(`./helpers/helper.js`)
 
@@ -67,6 +69,12 @@ app.use("/masterPipes", masterPipeRouter)
 
 // use connections router
 app.use("/connectionTypes", connectionTypeRouter)
+
+// use genericPipes router
+app.use("/genericPipes", genericPipeRouter)
+
+// use manufacturerProdRange router
+app.use("/manufacturerProdRanges", manufacturerProdRangeRouter)
 
 app.all("*", (req, res, next) => {
 	const err = new Error(`can't find ${req.originalUrl} on the server`)

@@ -59,6 +59,7 @@ exports.removeMasterPipe = async (req, res, next) => {
 		if (!req.body.ids) return next(errObject("ids not found", 400))
 
 		const idArr = req.body.ids
+		// console.log(idArr)
 
 		// if masterPipe ids length is 0 throw an error
 		if (idArr.length === 0) {

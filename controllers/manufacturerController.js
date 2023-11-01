@@ -13,7 +13,7 @@ exports.getManufacturers = async (req, res, next) => {
 
 		res.status(200).json(response)
 	} catch (error) {
-		console.log(error)
+		// console.log(error)
 		// Pass the error to the next middleware for centralized error handling
 		next(errObject("Error while fetching manufacturer"))
 	}
@@ -23,7 +23,11 @@ exports.setManufacturer = async (req, res, next) => {
 	try {
 		const manufacturerObj = req.body
 		const createdManufacturer = await manufacturerService.createManufacturer(manufacturerObj)
-		res.status(201).json({ status: "success",message:"Manufacturer created Successfully", data: createdManufacturer })
+		res.status(201).json({
+			status: "success",
+			message: "Manufacturer created Successfully",
+			data: createdManufacturer,
+		})
 	} catch (error) {
 		next(error)
 	}
@@ -83,7 +87,7 @@ exports.updateManufacturer = async (req, res, next) => {
 		await manufacturerService.patchManufacturer(updateId, dataToUpdate)
 		res.status(200).json({ status: "success", message: `Manufacturer updated successfully` })
 	} catch (error) {
-		console.log("ohnoo")
+		// console.log("ohnoo")
 		next(error)
 	}
 }
