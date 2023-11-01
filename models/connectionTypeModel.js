@@ -14,6 +14,7 @@ const connectionTypeSchema = new mongoose.Schema({
 		unique: [true, "Same connection code exists"],
 		required: true,
 		maxLength: 8,
+		set: (value) => value.toUpperCase(),
 	},
 })
 

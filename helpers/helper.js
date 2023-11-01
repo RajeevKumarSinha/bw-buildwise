@@ -68,7 +68,10 @@ function titleCase(inputString) {
 const titleCaseObject = (object) => {
 	for (const key in object) {
 		// continue if code is encountered
-		if (key.includes(/code/i)) continue
+		if (/code/i.test(key)) continue
+
+		// if unit is encountered, continue
+		if (/unit/i.test(key)) continue
 
 		// convert everyString to TitleCase.
 		if (typeof object[key] === "string") object[key] = titleCase(object[key])

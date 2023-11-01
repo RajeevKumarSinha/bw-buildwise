@@ -106,6 +106,6 @@ exports.updateConnectionType = async (req, res, next) => {
 	} catch (error) {
 		if (error.code !== 11000) next(error)
 
-		throw errObject("A connection with the same name or code already exists.", 400)
+		next(errObject("A connection with the same name or code already exists.", 400))
 	}
 }

@@ -1,6 +1,6 @@
 "use strict"
 
-const { errObject } = require(`${__dirname}/../helpers/helper.js`)
+const { errObject, titleCaseObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const manufacturerProdRangeService = require(`${__dirname}/../services/manufacturerProdRangeService`)
 
@@ -19,10 +19,14 @@ exports.getManufacturerProdRanges = async (req, res, next) => {
 
 exports.setManufacturerProdRange = async (req, res, next) => {
 	try {
-		const manufacturerProdRangeReq = req.body
-		// console.log(manufacturerProdRangeReq)
+		let updateDetail = req.body
+		// console.log(updateDetail)
+
+		// convert the updateDetail object to titleCase
+		updateDetail = titleCaseObject(updateDetail)
+
 		const createdManufacturerProdRangeObj = await manufacturerProdRangeService.createManufacturerProdRange(
-			manufacturerProdRangeReq
+			updateDetail
 		)
 		res.status(201).json({
 			status: "success",
@@ -32,7 +36,7 @@ exports.setManufacturerProdRange = async (req, res, next) => {
 	} catch (error) {
 		if (error.code !== 11000) next(error)
 
-		throw errObject("A manufacturer product range with the same data already exists.", 400)
+		next(errObject("A manufacturer product range with the same data already exists.", 400))
 	}
 }
 
@@ -76,18 +80,21 @@ exports.updateManufacturerProdRange = async (req, res, next) => {
 	try {
 		const id = req.params.id
 
-		const updateDetail = req.body
+		let updateDetail = req.body
 
 		if (!id) return next(errObject("Generic pipe Id is required to update manufacturerProdRange details", 400))
 
 		if (Object.keys(updateDetail).length === 0)
 			return next(errObject("manufacturerProdRange type update details Can't be empty.", 400))
 
+		// convert the updateDetail object to titleCase
+		updateDetail = titleCaseObject(updateDetail)
+
 		await manufacturerProdRangeService.patchManufacturerProdRange(id, updateDetail)
 		res.status(200).json({ status: "success", message: `manufacturerProdRange updated successfully.` })
 	} catch (error) {
 		if (error.code !== 11000) next(error)
 
-		throw errObject("A manufacturer product range with the same data already exists.", 400)
+		next(errObject("A manufacturer product range with the same data already exists.", 400))
 	}
 }

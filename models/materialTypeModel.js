@@ -17,10 +17,10 @@ const materialTypeSchema = new mongoose.Schema({
 	notes: String,
 })
 
-materialTypeSchema.pre("save", function (next) {
-	if (!this.materialTypeCode) this.materialTypeCode = this.materialTypeName.slice(0, 3)
-	next()
-})
+// materialTypeSchema.pre("save", function (next) {
+// 	if (!this.materialTypeCode) this.materialTypeCode = this.materialTypeName.slice(0, 3)
+// 	next()
+// })
 
 const MaterialType = mongoose.model("MaterialType", materialTypeSchema)
 

@@ -9,6 +9,7 @@ const genericPipeSchema = new mongoose.Schema({
 	code: {
 		type: String,
 		required: true,
+		set: (value) => value.toUpperCase(),
 	},
 	unitType: {
 		type: String,

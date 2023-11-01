@@ -10,9 +10,6 @@ manufacturerRouter
 	.post(manufacturerController.setManufacturer)
 	.delete(manufacturerController.removeManufacturer)
 
-manufacturerRouter
-	.route("/:id")
-
-	.patch(manufacturerController.updateManufacturer)
+manufacturerRouter.route("/:id").patch(manufacturerController.updateManufacturer)
 
 module.exports = manufacturerRouter

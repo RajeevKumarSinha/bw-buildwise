@@ -1,6 +1,6 @@
 "use strict"
 
-const { errObject, errorHandler } = require(`${__dirname}/../helpers/helper.js`)
+const { errObject, titleCaseObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const manufacturerService = require(`${__dirname}/../services/manufacturerService`)
 
@@ -21,7 +21,11 @@ exports.getManufacturers = async (req, res, next) => {
 
 exports.setManufacturer = async (req, res, next) => {
 	try {
-		const manufacturerObj = req.body
+		let manufacturerObj = req.body
+
+		// convert the manufacturerObj object to titleCase
+		manufacturerObj = titleCaseObject(manufacturerObj)
+
 		const createdManufacturer = await manufacturerService.createManufacturer(manufacturerObj)
 		res.status(201).json({
 			status: "success",
@@ -29,7 +33,9 @@ exports.setManufacturer = async (req, res, next) => {
 			data: createdManufacturer,
 		})
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		next(errObject("A manufacturer with the same data already exists.", 400))
 	}
 }
 
@@ -72,7 +78,7 @@ exports.removeManufacturer = async (req, res, next) => {
 exports.updateManufacturer = async (req, res, next) => {
 	try {
 		const updateId = req.params.id
-		const dataToUpdate = req.body
+		let dataToUpdate = req.body
 
 		// if updateId is falsy , throw an error
 		if (!updateId) return next(errObject("Manufacturer Id is required to update country details", 400))
@@ -84,10 +90,14 @@ exports.updateManufacturer = async (req, res, next) => {
 		// if countryCode is present in req body make it uppercase
 		if (dataToUpdate.countryCode) dataToUpdate.countryCode = dataToUpdate.countryCode.toUpperCase()
 
+		// convert the dataToUpdate object to titleCase
+		dataToUpdate = titleCaseObject(dataToUpdate)
+
 		await manufacturerService.patchManufacturer(updateId, dataToUpdate)
 		res.status(200).json({ status: "success", message: `Manufacturer updated successfully` })
 	} catch (error) {
-		// console.log("ohnoo")
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		next(errObject("A manufacturer product range with the same data already exists.", 400))
 	}
 }

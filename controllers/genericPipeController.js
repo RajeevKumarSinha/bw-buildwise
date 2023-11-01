@@ -1,6 +1,6 @@
 "use strict"
 
-const { errObject } = require(`${__dirname}/../helpers/helper.js`)
+const { errObject, titleCaseObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const genericPipeService = require(`${__dirname}/../services/genericPipeService`)
 
@@ -19,9 +19,12 @@ exports.getGenericPipes = async (req, res, next) => {
 
 exports.setGenericPipe = async (req, res, next) => {
 	try {
-		const genericPipeReq = req.body
-		// console.log(genericPipeReq)
-		const createdGenericPipeObj = await genericPipeService.createGenericPipe(genericPipeReq)
+		let updateDetail = req.body
+
+		// convert the updateDetail object to titleCase
+		updateDetail = titleCaseObject(updateDetail)
+
+		const createdGenericPipeObj = await genericPipeService.createGenericPipe(updateDetail)
 		res.status(201).json({
 			status: "success",
 			message: "New generic pipe created successfuly.",
@@ -74,12 +77,15 @@ exports.updateGenericPipe = async (req, res, next) => {
 	try {
 		const id = req.params.id
 
-		const updateDetail = req.body
+		let updateDetail = req.body
 
 		if (!id) return next(errObject("Generic pipe Id is required to update genericPipe details", 400))
 
 		if (Object.keys(updateDetail).length === 0)
 			return next(errObject("genericPipe type update details Can't be empty.", 400))
+
+		// convert the updateDetail object to titleCase
+		updateDetail = titleCaseObject(updateDetail)
 
 		await genericPipeService.patchGenericPipe(id, updateDetail)
 		res.status(200).json({ status: "success", message: `GenericPipe updated successfully.` })
