@@ -9,14 +9,14 @@ const { errObject } = require(`${__dirname}/../helpers/helper`)
 
 exports.getPagedGenericPipes = async (pageNo, docsPerPage) => {
 	const totalDocs = await GenericPipe.countDocuments()
-	const genericPipesData = await GenericPipe.find()
+	const genericPipeSystemsData = await GenericPipe.find()
 		.populate("sizes")
 		.skip(pageNo * docsPerPage)
 		.limit(docsPerPage)
 
 	const response = {
 		total: totalDocs,
-		genericPipesData,
+		genericPipeSystemsData,
 	}
 
 	return response

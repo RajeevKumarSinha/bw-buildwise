@@ -2,16 +2,17 @@
 
 const express = require("express")
 
-const commonProductFieldRouter = express.Router()
+const dwvpipeFittingTypeRouter = express.Router()
 
-const commonProductField = require(`${__dirname}/../../controllers/parameterControllers/commonProductFieldController`)
+const dwvPipeFittingParameter = require(`${__dirname}/../../controllers/parameterControllers/dwvPipeFittingParameterController`)
 
-commonProductFieldRouter
+// console.log(dwvPipeFittingParameter)
+dwvpipeFittingTypeRouter
 	.route("/")
-	.get(commonProductField.getCommonProductFields)
-	.post(commonProductField.setCommonProductField)
-	.delete(commonProductField.removeCommonProductField)
+	.get(dwvPipeFittingParameter.getdwvPipeFittingParameters)
+	.post(dwvPipeFittingParameter.setdwvPipeFittingParameter)
+	.delete(dwvPipeFittingParameter.removedwvPipeFittingParameter)
 
-commonProductFieldRouter.route("/:id").patch(commonProductField.updateCommonProductField)
+dwvpipeFittingTypeRouter.route("/:id").patch(dwvPipeFittingParameter.updatedwvPipeFittingParameter)
 
-module.exports = commonProductFieldRouter
+module.exports = dwvpipeFittingTypeRouter

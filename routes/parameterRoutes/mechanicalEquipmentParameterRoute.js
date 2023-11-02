@@ -2,16 +2,16 @@
 
 const express = require("express")
 
-const commonProductFieldRouter = express.Router()
+const mechanicalEquipmentParameterRouter = express.Router()
 
-const commonProductField = require(`${__dirname}/../../controllers/parameterControllers/commonProductFieldController`)
+const mechanicalEquipmentParameter = require(`${__dirname}/../../controllers/parameterControllers/mechanicalEquipmentParameterController`)
 
-commonProductFieldRouter
+mechanicalEquipmentParameterRouter
 	.route("/")
-	.get(commonProductField.getCommonProductFields)
-	.post(commonProductField.setCommonProductField)
-	.delete(commonProductField.removeCommonProductField)
+	.get(mechanicalEquipmentParameter.getMechanicalEquipmentParameters)
+	.post(mechanicalEquipmentParameter.setMechanicalEquipmentParameter)
+	.delete(mechanicalEquipmentParameter.removeMechanicalEquipmentParameter)
 
-commonProductFieldRouter.route("/:id").patch(commonProductField.updateCommonProductField)
+mechanicalEquipmentParameterRouter.route("/:id").patch(mechanicalEquipmentParameter.updateMechanicalEquipmentParameter)
 
-module.exports = commonProductFieldRouter
+module.exports = mechanicalEquipmentParameterRouter
