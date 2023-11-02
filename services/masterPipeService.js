@@ -2,11 +2,30 @@
 
 const MasterPipe = require("../models/masterPipeModel")
 
-exports.getPagedMasterPipes = async (pageNo, docsPerPage) => {
+exports.getPagedMasterPipes = async (pageNo, docsPerPage, unit) => {
+	let masterPipesData
 	const totalDocs = await MasterPipe.countDocuments()
-	const masterPipesData = await MasterPipe.find()
-		.skip(pageNo * docsPerPage)
-		.limit(docsPerPage)
+	// for unit = mm
+	if (unit === "mm")
+		masterPipesData = await MasterPipe.find({}, { _id: 1, metricText: 1 })
+			.skip(pageNo * docsPerPage)
+			.limit(docsPerPage)
+	// console.log(masterPipesData)
+
+	// for unit = inches
+	if (unit === "inches")
+		masterPipesData = await MasterPipe.find({}, { _id: 1, imperialText: 1 })
+			.skip(pageNo * docsPerPage)
+			.limit(docsPerPage)
+
+	// when unit is null
+	if (unit === null)
+		masterPipesData = await MasterPipe.find()
+			.skip(pageNo * docsPerPage)
+			.limit(docsPerPage)
+
+	// paging results
+	masterPipesData
 
 	const response = {
 		total: totalDocs,
@@ -16,8 +35,8 @@ exports.getPagedMasterPipes = async (pageNo, docsPerPage) => {
 	return response
 }
 
-exports.createMasterPipe = async (masterPipeData) => {
-	const masterPipeObj = await MasterPipe.create(masterPipeData)
+exports.createMasterPipe = async (masterPipesData) => {
+	const masterPipeObj = await MasterPipe.create(masterPipesData)
 	return masterPipeObj
 }
 
