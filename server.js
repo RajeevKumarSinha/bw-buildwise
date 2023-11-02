@@ -18,7 +18,7 @@ const dwvPipeFittingParameterRouter = require("./routes/parameterRoutes/dwvPipeF
 const mechanicalEquipmentParameterRouter = require("./routes/parameterRoutes/mechanicalEquipmentParameterRoute") //Mechanical equipment parameter route path
 const normalPipeFittingParameterRouter = require("./routes/parameterRoutes/normalPipeFittingParameterRoute") // Normal pipe Fitting parameter route path
 const pipeFittingTypeRouter = require("./routes/parameterRoutes/pipeFittingTypeRoute") // Pipefitting type route path
-const pipeParameterRouter = require("./routes/parameterRoutes/pipeFittingTypeRoute") // Pipefitting type route path
+const pipeParameterRouter = require("./routes/parameterRoutes/pipeParameterRoute") // PipeParameter route path
 const plumbingFixtureParameterRouter = require("./routes/parameterRoutes/plumbingFixtureParameterRoute") // plumbing Fixture parameter
 const valveParameterRouter = require("./routes/parameterRoutes/valveParameterRoute") // valve Fixture parameter route path
 
@@ -89,10 +89,10 @@ app.use("/manufacturerProdRanges", manufacturerProdRangeRouter)
 // these are parameter routers
 app.use("/dwvPipeFittingParameters", dwvPipeFittingParameterRouter)
 app.use("/mechanicalEquipmentParameters", mechanicalEquipmentParameterRouter)
-// app.use("/normalPipeFittingParameters", normalPipeFittingParameterRouter)
-// app.use("/pipeParameters", pipeParameterRouter)
-// app.use("/plumbingFixtureParameters", plumbingFixtureParameterRouter)
-// app.use("/valveParameters", valveParameterRouter)
+app.use("/normalPipeFittingParameters", normalPipeFittingParameterRouter)
+app.use("/pipeParameters", pipeParameterRouter)
+app.use("/plumbingFixtureParameters", plumbingFixtureParameterRouter)
+app.use("/valveParameters", valveParameterRouter)
 
 // commonProductFields
 app.use("/commonProductFields", commonProductFieldRouter)

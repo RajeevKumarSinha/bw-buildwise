@@ -22,6 +22,7 @@ const genericPipeSchema = new mongoose.Schema({
 			ref: "MasterPipe",
 		},
 	],
+	notes: String,
 })
 
 const GenericPipe = mongoose.model("GenericPipe", genericPipeSchema)

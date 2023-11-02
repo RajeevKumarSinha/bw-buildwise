@@ -2,16 +2,16 @@
 
 const express = require("express")
 
-const commonProductFieldRouter = express.Router()
+const normalPipeFittingParameterRouter = express.Router()
 
-const commonProductField = require(`${__dirname}/../../controllers/parameterControllers/commonProductFieldController`)
+const normalPipeFittingParameter = require(`${__dirname}/../../controllers/parameterControllers/normalPipeFittingParameterController`)
 
-commonProductFieldRouter
+normalPipeFittingParameterRouter
 	.route("/")
-	.get(commonProductField.getCommonProductFields)
-	.post(commonProductField.setCommonProductField)
-	.delete(commonProductField.removeCommonProductField)
+	.get(normalPipeFittingParameter.getNormalPipeFittingParameters)
+	.post(normalPipeFittingParameter.setNormalPipeFittingParameter)
+	.delete(normalPipeFittingParameter.removeNormalPipeFittingParameter)
 
-commonProductFieldRouter.route("/:id").patch(commonProductField.updateCommonProductField)
+normalPipeFittingParameterRouter.route("/:id").patch(normalPipeFittingParameter.updateNormalPipeFittingParameter)
 
-module.exports = commonProductFieldRouter
+module.exports = normalPipeFittingParameterRouter

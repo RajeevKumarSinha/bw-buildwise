@@ -1,36 +1,36 @@
 "use strict"
 
-const CommonProductField = require(`${__dirname}/../../models/parameterModels/commonProductFieldModel.js`)
+const ValveParameter = require(`${__dirname}/../../models/parameterModels/valveParameterModel.js`)
 
-exports.getPagedCommonProductFields = async (pageNo, docsPerPage) => {
-	const totalDocs = await CommonProductField.countDocuments()
-	const commonProductFieldsData = await CommonProductField.find()
+exports.getPagedValveParameters = async (pageNo, docsPerPage) => {
+	const totalDocs = await ValveParameter.countDocuments()
+	const valveParametersData = await ValveParameter.find()
 		.skip(pageNo * docsPerPage)
 		.limit(docsPerPage)
 
 	const response = {
 		total: totalDocs,
-		commonProductFieldsData,
+		valveParametersData,
 	}
 
 	return response
 }
 
-exports.createCommonProductField = async (pipeData) => {
-	const commonProductFieldObj = await CommonProductField.create(pipeData)
-	return commonProductFieldObj
+exports.createValveParameter = async (pipeData) => {
+	const valveParameterObj = await ValveParameter.create(pipeData)
+	return valveParameterObj
 }
 
-exports.deleteCommonProductField = async (idArr) => {
-	// const isPresent = await CommonProductField.find({ _id: { $in: idArr } })
+exports.deleteValveParameter = async (idArr) => {
+	// const isPresent = await ValveParameter.find({ _id: { $in: idArr } })
 	try {
-		return await CommonProductField.deleteMany({ _id: { $in: idArr } })
+		return await ValveParameter.deleteMany({ _id: { $in: idArr } })
 	} catch (error) {
 		throw error // Let the error handler handle it
 	}
 }
 
-exports.patchCommonProductField = async (id, updateData) => {
+exports.patchValveParameter = async (id, updateData) => {
 	// console.log(id, updateData)
-	return await CommonProductField.findByIdAndUpdate({ _id: id }, updateData)
+	return await ValveParameter.findByIdAndUpdate({ _id: id }, updateData)
 }

@@ -100,7 +100,10 @@ exports.updateCountry = async (req, res, next) => {
 		updateDetail = titleCaseObject(updateDetail)
 
 		// Use the countryService to update the country details.
-		await countryService.patchCountry(id, updateDetail)
+		const isUpdated = await countryService.patchCountry(id, updateDetail)
+
+		//isUpdated returns two value `null` or `{updated object }` , null is when the id is invalid.
+		if (!isUpdated) return next(errObject("Invalid Id", 404))
 
 		// Send a 200 OK response indicating a successful update.
 		res.status(200).json({ status: "success", message: `Country updated successfully.` })

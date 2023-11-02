@@ -1,36 +1,36 @@
 "use strict"
 
-const CommonProductField = require(`${__dirname}/../../models/parameterModels/commonProductFieldModel.js`)
+const PlumbingFixtureParameter = require(`${__dirname}/../../models/parameterModels/plumbingFixtureParameterModel.js`)
 
-exports.getPagedCommonProductFields = async (pageNo, docsPerPage) => {
-	const totalDocs = await CommonProductField.countDocuments()
-	const commonProductFieldsData = await CommonProductField.find()
+exports.getPagedPlumbingFixtureParameters = async (pageNo, docsPerPage) => {
+	const totalDocs = await PlumbingFixtureParameter.countDocuments()
+	const plumbingFixtureParametersData = await PlumbingFixtureParameter.find()
 		.skip(pageNo * docsPerPage)
 		.limit(docsPerPage)
 
 	const response = {
 		total: totalDocs,
-		commonProductFieldsData,
+		plumbingFixtureParametersData,
 	}
 
 	return response
 }
 
-exports.createCommonProductField = async (pipeData) => {
-	const commonProductFieldObj = await CommonProductField.create(pipeData)
-	return commonProductFieldObj
+exports.createPlumbingFixtureParameter = async (pipeData) => {
+	const PlumbingFixtureParameterObj = await PlumbingFixtureParameter.create(pipeData)
+	return PlumbingFixtureParameterObj
 }
 
-exports.deleteCommonProductField = async (idArr) => {
-	// const isPresent = await CommonProductField.find({ _id: { $in: idArr } })
+exports.deletePlumbingFixtureParameter = async (idArr) => {
+	// const isPresent = await PlumbingFixtureParameter.find({ _id: { $in: idArr } })
 	try {
-		return await CommonProductField.deleteMany({ _id: { $in: idArr } })
+		return await PlumbingFixtureParameter.deleteMany({ _id: { $in: idArr } })
 	} catch (error) {
 		throw error // Let the error handler handle it
 	}
 }
 
-exports.patchCommonProductField = async (id, updateData) => {
+exports.patchPlumbingFixtureParameter = async (id, updateData) => {
 	// console.log(id, updateData)
-	return await CommonProductField.findByIdAndUpdate({ _id: id }, updateData)
+	return await PlumbingFixtureParameter.findByIdAndUpdate({ _id: id }, updateData)
 }

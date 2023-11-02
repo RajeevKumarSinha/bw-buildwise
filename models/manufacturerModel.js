@@ -6,7 +6,6 @@ const { errObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const manufacturerSchema = new mongoose.Schema({
 	manufacturerName: {
-		unique: true,
 		type: String,
 		required: true,
 	},
@@ -24,6 +23,7 @@ const manufacturerSchema = new mongoose.Schema({
 	compositeCode: {
 		type: String,
 		required: true,
+		unique: true,
 		set: (value) => value.toUpperCase(),
 	},
 	unitType: {

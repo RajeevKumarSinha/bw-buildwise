@@ -71,7 +71,11 @@ exports.removeProductType = async (req, res, next) => {
 			return next(errObject("ProductType ids array cannot be empty", 400))
 		}
 
-		await productTypeService.deleteProductType(idArr)
+		const isUpdated = await productTypeService.deleteProductType(idArr)
+
+		//isUpdated returns two value `null` or `{updated object }` , null is when the id is invalid.
+		if (!isUpdated) return next(errObject("Invalid Id", 404))
+
 		res.status(204).json() //204 - No Content: The request was successful, but there is no additional information to send back
 	} catch (error) {
 		next(errObject("Can't delete ids array", 400))

@@ -6,17 +6,15 @@ exports.getPagedMasterPipes = async (pageNo, docsPerPage, unit) => {
 	let masterPipesData
 	const totalDocs = await MasterPipe.countDocuments()
 	// for unit = mm
-	if (unit === "mm")
-		masterPipesData = await MasterPipe.find({}, { _id: 1, metricText: 1 })
-			.skip(pageNo * docsPerPage)
-			.limit(docsPerPage)
+	if (unit === "mm") masterPipesData = await MasterPipe.find({}, { _id: 1, metricText: 1 })
+	// .skip(pageNo * docsPerPage)
+	// .limit(docsPerPage)
 	// console.log(masterPipesData)
 
 	// for unit = inches
-	if (unit === "inches")
-		masterPipesData = await MasterPipe.find({}, { _id: 1, imperialText: 1 })
-			.skip(pageNo * docsPerPage)
-			.limit(docsPerPage)
+	if (unit === "inches") masterPipesData = await MasterPipe.find({}, { _id: 1, imperialText: 1 })
+	// .skip(pageNo * docsPerPage)
+	// .limit(docsPerPage)
 
 	// when unit is null
 	if (unit === null)
