@@ -12,6 +12,16 @@ const connectionTypeRouter = require("./routes/connectionTypeRoute") // connecti
 const genericPipeRouter = require("./routes/genericPipeRoute") // generic route path
 const manufacturerProdRangeRouter = require("./routes/manufacturerProdRangeRoute") // manufacturerProdRange route path
 
+// parameters router
+const commonProductFieldRouter = require("./routes/parameterRoutes/commonProductFieldRoute") // common product route path
+const dwvPipeFittingParameterRouter = require("./routes/parameterRoutes/dwvPipeFittingParameterRoute") // dwvPipe Fitting parameter route path
+const mechanicalEquipmentParameterRouter = require("./routes/parameterRoutes/mechanicalEquipmentParameterRoute") //Mechanical equipment parameter route path
+const normalPipeFittingParameterRouter = require("./routes/parameterRoutes/normalPipeFittingParameterRoute") // Normal pipe Fitting parameter route path
+const pipeFittingTypeRouter = require("./routes/parameterRoutes/pipeFittingTypeRoute") // Pipefitting type route path
+const pipeParameterRouter = require("./routes/parameterRoutes/pipeFittingTypeRoute") // Pipefitting type route path
+const plumbingFixtureParameterRouter = require("./routes/parameterRoutes/plumbingFixtureParameterRoute") // plumbing Fixture parameter
+const valveParameterRouter = require("./routes/parameterRoutes/valveParameterRoute") // valve Fixture parameter route path
+
 const { errorHandler } = require(`./helpers/helper.js`)
 
 const morgan = require("morgan") // for development only
@@ -75,6 +85,20 @@ app.use("/genericPipes", genericPipeRouter)
 
 // use manufacturerProdRange router
 app.use("/manufacturerProdRanges", manufacturerProdRangeRouter)
+
+// these are parameter routers
+// app.use("/dwvPipeFittingParameters", dwvPipeFittingParameterRouter)
+// app.use("/mechanicalEquipmentParameters", mechanicalEquipmentParameterRouter)
+// app.use("/normalPipeFittingParameters", normalPipeFittingParameterRouter)
+// app.use("/pipeParameters", pipeParameterRouter)
+// app.use("/plumbingFixtureParameters", plumbingFixtureParameterRouter)
+// app.use("/valveParameters", valveParameterRouter)
+
+// commonProductFields
+app.use("/commonProductFields", commonProductFieldRouter)
+
+// pipefittngTypes
+app.use("/pipeFittingTypes", pipeFittingTypeRouter)
 
 app.all("*", (req, res, next) => {
 	const err = new Error(`can't find ${req.originalUrl} on the server`)
