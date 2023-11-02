@@ -11,16 +11,18 @@ const countrySchema = new mongoose.Schema({
 	countryRegionCode: {
 		type: String,
 		unique: true,
+		required: [true, "A country code must be provided." ],
 		maxlength: 8,
 		set: (value) => value.toUpperCase(),
 	},
 	notes: String,
 })
 
-countrySchema.pre(`${"save" || "update"}`, function (next) {
-	if (!this.countryRegionCode) this.countryRegionCode = this.countryRegionName.slice(0, 3)
-	next()
-})
+// not required since user will always enter countryCode.
+// countrySchema.pre(`${"save" || "update"}`, function (next) {
+// 	if (!this.countryRegionCode) this.countryRegionCode = this.countryRegionName.slice(0, 3)
+// 	next()
+// })
 
 const Country = mongoose.model("Country", countrySchema)
 

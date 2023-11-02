@@ -10,8 +10,8 @@ const manufacturerSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	countryCode: {
-		type: String,
+	countryID: {
+		type: mongoose.Schema.Types.ObjectId,
 		ref: "Country",
 	},
 	// countryID: String,
@@ -19,10 +19,12 @@ const manufacturerSchema = new mongoose.Schema({
 		unique: true,
 		type: String,
 		required: true,
+		set: (value) => value.toUpperCase(),
 	},
 	compositeCode: {
 		type: String,
 		required: true,
+		set: (value) => value.toUpperCase(),
 	},
 	unitType: {
 		type: String,
@@ -34,43 +36,43 @@ const manufacturerSchema = new mongoose.Schema({
 
 // Before saving the manufacturer, find the corresponding country and get its countryRegionCode
 // and save it under country field in the document.
-manufacturerSchema.pre(`findOneAndUpdate`, async function (next) {
-	// (this._conditions._id._id) gives id of current document which will be updated.0
+// manufacturerSchema.pre(`findOneAndUpdate`, async function (next) {
+// 	// (this._conditions._id._id) gives id of current document which will be updated.0
 
-	// if countryCode is not present, proceed to next middleware.
-	if (!this._update.countryCode) return next()
+// 	// if countryCode is not present, proceed to next middleware.
+// 	if (!this._update.countryCode) return next()
 
-	const manufacturer = await Manufacturer.findOne({ _id: this._conditions._id._id })
-	if (manufacturer.country.countryRegionCode === this._update.countryRegionCode) return next()
+// 	const manufacturer = await Manufacturer.findOne({ _id: this._conditions._id._id })
+// 	if (manufacturer.country.countryRegionCode === this._update.countryRegionCode) return next()
 
-	//fetch country with the new countryCode
-	const country = await Country.findOne({ countryRegionCode: this._update.countryCode })
-	if (!country) return next(errObject("Provided country code is not available in the country List.", 400))
+// 	//fetch country with the new countryCode
+// 	const country = await Country.findOne({ countryRegionCode: this._update.countryCode })
+// 	if (!country) return next(errObject("Provided country code is not available in the country List.", 400))
 
-	this._update.countryCode = country.countryRegionCode // Update the countryCode field with the countryRegionCode
-	this._update.country = country // Update the country with new country.
-	return next()
-})
+// 	this._update.countryCode = country.countryRegionCode // Update the countryCode field with the countryRegionCode
+// 	this._update.country = country // Update the country with new country.
+// 	return next()
+// })
 
 // Before saving the manufacturer, find the corresponding country and get its countryRegionCode
 // and save it under country field in the document.
-manufacturerSchema.pre(`save`, async function (next) {
-	// add try catch here and reduce nesting❌
-	// console.log(this)
-	const country = await Country.findOne({ countryRegionCode: this.countryCode }) // if written under try throws error in case and we are unable to handle its error.
+// manufacturerSchema.pre(`save`, async function (next) {
+// 	// add try catch here and reduce nesting❌
+// 	// console.log(this)
+// 	const country = await Country.findOne({ countryRegionCode: this.countryCode }) // if written under try throws error in case and we are unable to handle its error.
 
-	// console.log(country)
-	if (!country) return next(errObject(`Country not found`, 404))
+// 	// console.log(country)
+// 	if (!country) return next(errObject(`Country not found`, 404))
 
-	try {
-		this.countryCode = country.countryRegionCode // Update the countryCode field with the countryRegionCode
-		// this.countryID = country._id
-		this.country = country
-		next()
-	} catch (error) {
-		next(error)
-	}
-})
+// 	try {
+// 		this.countryCode = country.countryRegionCode // Update the countryCode field with the countryRegionCode
+// 		// this.countryID = country._id
+// 		this.country = country
+// 		next()
+// 	} catch (error) {
+// 		next(error)
+// 	}
+// })
 
 // before sending the query response check if the country code has changed or not using id.
 // manufacturerSchema.find()

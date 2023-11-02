@@ -1,6 +1,6 @@
 "use strict"
 
-const { errObject } = require(`${__dirname}/../helpers/helper.js`)
+const { errObject, titleCaseObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const countryService = require(`${__dirname}/../services/countryService`)
 
@@ -34,11 +34,17 @@ exports.getCountries = async (req, res, next) => {
 
 exports.setCountries = async (req, res, next) => {
 	try {
-		const country = req.body
-		const createdCountry = await countryService.createCountry(country)
+		let updateDetail = req.body
+
+		// convert the updateDetail object to titleCase
+		updateDetail = titleCaseObject(updateDetail)
+
+		const createdCountry = await countryService.createCountry(updateDetail)
 		res.status(201).json({ status: "success", message: "Country created Succesfully", data: createdCountry })
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		next(errObject("A country with the same data already exists.", 400))
 	}
 }
 
@@ -81,7 +87,7 @@ exports.removeCountry = async (req, res, next) => {
 exports.updateCountry = async (req, res, next) => {
 	try {
 		const id = req.params.id // Get the country ID from the request parameters.
-		const updateDetail = req.body // Get the update details from the request body.
+		let updateDetail = req.body // Get the update details from the request body.
 
 		// Check if the country ID is provided; if not, send a 400 Bad Request response.
 		if (!id) return next(errObject("Country Id is required to update country details", 400))
@@ -90,13 +96,17 @@ exports.updateCountry = async (req, res, next) => {
 		if (!updateDetail.countryRegionName && !updateDetail.countryRegionCode)
 			return next(errObject("Country Name & Country Code is required to update country details", 400))
 
+		// convert the updateDetail object to titleCase
+		updateDetail = titleCaseObject(updateDetail)
+
 		// Use the countryService to update the country details.
 		await countryService.patchCountry(id, updateDetail)
 
 		// Send a 200 OK response indicating a successful update.
 		res.status(200).json({ status: "success", message: `Country updated successfully.` })
 	} catch (error) {
-		// If an error occurs, pass it to the error-handling middleware.
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		next(errObject("A country with the same data already exists.", 400))
 	}
 }

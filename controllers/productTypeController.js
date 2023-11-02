@@ -1,22 +1,28 @@
 "use strict"
 
-const { errObject } = require(`${__dirname}/../helpers/helper.js`)
+const { errObject, titleCaseObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const productTypeService = require(`${__dirname}/../services/productTypeService.js`)
 
 exports.setProductType = async (req, res, next) => {
 	try {
-		const dataProd = req.body
-		if (!dataProd.masterCategory && !dataProd.mainCategory && !dataProd.subCategory)
+		let updateDetail = req.body
+		if (!updateDetail.masterCategory && !updateDetail.mainCategory && !updateDetail.subCategory)
 			return next(
 				errObject("masterCategory & mainCategory & subCategory are required to add a new ProductType", 400)
 			)
-		const addedProdType = await productTypeService.createProductType(dataProd)
+
+		// convert the updateDetail object to titleCase
+		updateDetail = titleCaseObject(updateDetail)
+
+		const addedProdType = await productTypeService.createProductType(updateDetail)
 		return res
 			.status(201)
 			.json({ status: "success", message: "New product type added successfully.", data: addedProdType })
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		next(errObject("A product type with the same data already exists.", 400))
 	}
 }
 
@@ -36,17 +42,22 @@ exports.getProductType = async (req, res, next) => {
 exports.updateProductType = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		const updateDetail = req.body
+		let updateDetail = req.body
 
 		if (!id) return next(errObject("ProductType Id is required to update ProuductType details", 400))
 
 		if (Object.keys(updateDetail).length === 0)
 			return next(errObject("ProductType request body can't be empty.", 400))
 
+		// convert the updateDetail object to titleCase
+		updateDetail = titleCaseObject(updateDetail)
+
 		await productTypeService.patchProductType(id, updateDetail)
 		res.status(200).json({ status: "success", message: `Prouduct type updated successfully.` })
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		next(errObject("A product type with the same data already exists.", 400))
 	}
 }
 exports.removeProductType = async (req, res, next) => {

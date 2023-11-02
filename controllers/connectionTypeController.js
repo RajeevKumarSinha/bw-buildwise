@@ -1,6 +1,6 @@
 "use strict"
 
-const { errObject } = require(`${__dirname}/../helpers/helper.js`)
+const { errObject, titleCaseObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const connectionTypeService = require(`${__dirname}/../services/connectionTypeService`)
 
@@ -33,7 +33,11 @@ exports.getConnectionTypes = async (req, res, next) => {
 
 exports.setConnectionType = async (req, res, next) => {
 	try {
-		const connectionReq = req.body
+		let connectionReq = req.body
+
+		// convert the connectionReq object to titleCase
+		connectionReq = titleCaseObject(connectionReq)
+
 		const createdConnectionObj = await connectionTypeService.createConnectionType(connectionReq)
 		res.status(201).json({
 			status: "success",
@@ -43,7 +47,7 @@ exports.setConnectionType = async (req, res, next) => {
 	} catch (error) {
 		if (error.code !== 11000) next(error)
 
-		throw errObject("A connection with the same name or code already exists.", 400)
+		next(errObject("A connection with the same name or code already exists.", 400))
 	}
 }
 
@@ -87,18 +91,21 @@ exports.updateConnectionType = async (req, res, next) => {
 	try {
 		const id = req.params.id
 
-		const updateDetail = req.body
+		let updateDetail = req.body
 
 		if (!id) return next(errObject("Connection type Id is required to update connection details", 400))
 
 		if (Object.keys(updateDetail).length === 0)
 			return next(errObject("connection type update details Can't be empty.", 400))
 
+		// change updateDetail into titleCase before updating.
+		updateDetail = titleCaseObject(updateDetail)
+
 		await connectionTypeService.patchConnectionType(id, updateDetail)
 		res.status(200).json({ status: "success", message: `Connection updated successfully.` })
 	} catch (error) {
 		if (error.code !== 11000) next(error)
 
-		throw errObject("A connection with the same name or code already exists.", 400)
+		next(errObject("A connection with the same name or code already exists.", 400))
 	}
 }

@@ -1,7 +1,7 @@
 "use strict"
 
 const mongoose = require("mongoose")
-const { errObject } = require("../helpers/helper")
+const { errObject, titleCase } = require("../helpers/helper")
 
 const connectionTypeSchema = new mongoose.Schema({
 	connectionTypeName: {
@@ -14,16 +14,8 @@ const connectionTypeSchema = new mongoose.Schema({
 		unique: [true, "Same connection code exists"],
 		required: true,
 		maxLength: 8,
+		set: (value) => value.toUpperCase(),
 	},
-})
-
-connectionTypeSchema.pre("findOneAndUpdate", async function (next) {
-	const toUpdate = findOne(this._conditions._id._id)
-
-	// return a error if toUpdate is null
-	if (!toUpdate) return next(errObject("Invalid Id", 400))
-
-	next()
 })
 
 const ConnectionType = mongoose.model("ConnectionType", connectionTypeSchema)

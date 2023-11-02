@@ -1,6 +1,6 @@
 "use strict"
 
-const { errObject } = require(`${__dirname}/../helpers/helper.js`)
+const { errObject, titleCaseObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const masterPipeService = require(`${__dirname}/../services/masterPipeService`)
 
@@ -33,7 +33,11 @@ exports.getMasterPipes = async (req, res, next) => {
 
 exports.setMasterPipe = async (req, res, next) => {
 	try {
-		const masterPipeReq = req.body
+		let masterPipeReq = req.body
+
+		// convert the masterPipeReq object to titleCase
+		masterPipeReq = titleCaseObject(masterPipeReq)
+
 		const createdMasterPipeObj = await masterPipeService.createMasterPipe(masterPipeReq)
 		res.status(201).json({
 			status: "success",
@@ -41,7 +45,9 @@ exports.setMasterPipe = async (req, res, next) => {
 			data: createdMasterPipeObj,
 		})
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		next(errObject("A master pipe with the same data already exists.", 400))
 	}
 }
 
@@ -86,16 +92,21 @@ exports.updateMasterPipe = async (req, res, next) => {
 	try {
 		const id = req.params.id
 
-		const updateDetail = req.body
+		let masterPipeReq = req.body
 
 		if (!id) return next(errObject("MasterPipe Id is required to update masterPipe details", 400))
 
-		if (Object.keys(updateDetail).length === 0)
+		if (Object.keys(masterPipeReq).length === 0)
 			return next(errObject("masterPipe update details Can't be empty.", 400))
 
-		await masterPipeService.patchMasterPipe(id, updateDetail)
+		// convert the masterPipeReq object to titleCase
+		masterPipeReq = titleCaseObject(masterPipeReq)
+
+		await masterPipeService.patchMasterPipe(id, masterPipeReq)
 		res.status(200).json({ status: "success", message: `Master pipe updated successfully.` })
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		next(errObject("A master pipe with the same data already exists.", 400))
 	}
 }

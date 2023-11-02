@@ -1,6 +1,6 @@
 "use strict"
 
-const { errObject } = require(`${__dirname}/../helpers/helper.js`)
+const { errObject, titleCaseObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const materialTypeService = require(`${__dirname}/../services/materialTypeService`)
 
@@ -33,15 +33,21 @@ exports.getMaterialTypes = async (req, res, next) => {
 
 exports.setMaterialType = async (req, res, next) => {
 	try {
-		const materialTypeReq = req.body
-		const createdMaterialObj = await materialTypeService.createMaterialType(materialTypeReq)
+		const updateDetail = req.body
+
+		// convert the updateDetail object to titleCase
+		updateDetail = titleCaseObject(updateDetail)
+
+		const createdMaterialObj = await materialTypeService.createMaterialType(updateDetail)
 		res.status(201).json({
 			status: "success",
 			message: "New material type data is created successfully.",
 			data: createdMaterialObj,
 		})
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		next(errObject("A material type with the same data already exists.", 400))
 	}
 }
 
@@ -84,7 +90,7 @@ exports.removeMaterialType = async (req, res, next) => {
 exports.updateMaterialType = async (req, res, next) => {
 	try {
 		const id = req.params.id
-		const updateDetail = req.body
+		let updateDetail = req.body
 
 		if (!id) return next(errObject("MaterialType Id is required to update materialType details", 400))
 
@@ -93,9 +99,14 @@ exports.updateMaterialType = async (req, res, next) => {
 				errObject("MaterialType Name & MaterialType Code is required to update materialType details", 400)
 			)
 
+		// convert the updateDetail object to titleCase
+		updateDetail = titleCaseObject(updateDetail)
+
 		await materialTypeService.patchMaterialType(id, updateDetail)
 		res.status(200).json({ status: "success", message: `Material type updated successfully.` })
 	} catch (error) {
-		next(error)
+		if (error.code !== 11000) next(error)
+
+		next(errObject("A material type with the same data already exists.", 400))
 	}
 }

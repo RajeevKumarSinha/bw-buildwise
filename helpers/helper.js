@@ -51,6 +51,7 @@ function titleCase(inputString) {
 		if (char === " ") {
 			// If the character is a space, set the flag to capitalize the next character
 			capitalizeNext = true
+			titleCased += " "
 		} else if (capitalizeNext) {
 			// If the flag is set, capitalize the current character
 			titleCased += char.toUpperCase()
@@ -64,4 +65,21 @@ function titleCase(inputString) {
 	return titleCased
 }
 
-module.exports = { errorHandler, errObject, titleCase }
+const titleCaseObject = (object) => {
+	for (const key in object) {
+		// continue if code is encountered
+		if (/code/i.test(key)) continue
+
+		// if unit is encountered, continue
+		if (/unit/i.test(key)) continue
+
+		// convert everyString to TitleCase.
+		if (typeof object[key] === "string") object[key] = titleCase(object[key])
+		// console.log(object[key])
+	}
+	return object
+}
+
+// console.log(titleCase("hanthi , mere saathi"))
+
+module.exports = { errorHandler, errObject, titleCase, titleCaseObject }
