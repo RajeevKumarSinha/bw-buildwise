@@ -1,36 +1,36 @@
 "use strict"
 
-const CommonProductField = require(`${__dirname}/../../models/parameterModels/commonProductFieldModel.js`)
+const MechanicalEquipmentParameter = require(`${__dirname}/../../models/parameterModels/mechanicalEquipmentParameterModel.js`)
 
-exports.getPagedCommonProductFields = async (pageNo, docsPerPage) => {
-	const totalDocs = await CommonProductField.countDocuments()
-	const commonProductFieldsData = await CommonProductField.find()
+exports.getPagedMechanicalEquipmentParameters = async (pageNo, docsPerPage) => {
+	const totalDocs = await MechanicalEquipmentParameter.countDocuments()
+	const mechanicalEquipmentParametersData = await MechanicalEquipmentParameter.find()
 		.skip(pageNo * docsPerPage)
 		.limit(docsPerPage)
 
 	const response = {
 		total: totalDocs,
-		commonProductFieldsData,
+		mechanicalEquipmentParametersData,
 	}
 
 	return response
 }
 
-exports.createCommonProductField = async (pipeData) => {
-	const commonProductFieldObj = await CommonProductField.create(pipeData)
-	return commonProductFieldObj
+exports.createMechanicalEquipmentParameter = async (pipeData) => {
+	const mechanicalEquipmentParameterObj = await MechanicalEquipmentParameter.create(pipeData)
+	return mechanicalEquipmentParameterObj
 }
 
-exports.deleteCommonProductField = async (idArr) => {
-	// const isPresent = await CommonProductField.find({ _id: { $in: idArr } })
+exports.deleteMechanicalEquipmentParameter = async (idArr) => {
+	// const isPresent = await MechanicalEquipmentParameter.find({ _id: { $in: idArr } })
 	try {
-		return await CommonProductField.deleteMany({ _id: { $in: idArr } })
+		return await MechanicalEquipmentParameter.deleteMany({ _id: { $in: idArr } })
 	} catch (error) {
 		throw error // Let the error handler handle it
 	}
 }
 
-exports.patchCommonProductField = async (id, updateData) => {
+exports.patchMechanicalEquipmentParameter = async (id, updateData) => {
 	// console.log(id, updateData)
-	return await CommonProductField.findByIdAndUpdate({ _id: id }, updateData)
+	return await MechanicalEquipmentParameter.findByIdAndUpdate({ _id: id }, updateData)
 }

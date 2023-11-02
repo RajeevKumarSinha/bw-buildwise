@@ -81,14 +81,14 @@ app.use("/masterPipes", masterPipeRouter)
 app.use("/connectionTypes", connectionTypeRouter)
 
 // use genericPipes router
-app.use("/genericPipes", genericPipeRouter)
+app.use("/genericPipeSystems", genericPipeRouter)
 
 // use manufacturerProdRange router
 app.use("/manufacturerProdRanges", manufacturerProdRangeRouter)
 
 // these are parameter routers
-// app.use("/dwvPipeFittingParameters", dwvPipeFittingParameterRouter)
-// app.use("/mechanicalEquipmentParameters", mechanicalEquipmentParameterRouter)
+app.use("/dwvPipeFittingParameters", dwvPipeFittingParameterRouter)
+app.use("/mechanicalEquipmentParameters", mechanicalEquipmentParameterRouter)
 // app.use("/normalPipeFittingParameters", normalPipeFittingParameterRouter)
 // app.use("/pipeParameters", pipeParameterRouter)
 // app.use("/plumbingFixtureParameters", plumbingFixtureParameterRouter)

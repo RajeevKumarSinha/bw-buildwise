@@ -1,7 +1,7 @@
 "use strict"
 
 const mongoose = require("mongoose")
-const commonProductFieldSchema = new mongoose.Schema({
+const mechanicalEquipmentParameterSchema = new mongoose.Schema({
 	description: {
 		type: String,
 		required: true,
@@ -10,11 +10,11 @@ const commonProductFieldSchema = new mongoose.Schema({
 	type: {
 		type: String,
 		required: true,
-		enum: ["Date", "Number", "Yes", "No", "Image"],
+		enum: ["Date", "Number", "Boolean", "Image"],
 	},
 	notes: String,
 })
 
-const CommonProductField = mongoose.model("CommonProductField", commonProductFieldSchema)
+const MechanicalEquipmentParameter = mongoose.model("MechanicalEquipmentParameter", mechanicalEquipmentParameterSchema)
 
-module.exports = CommonProductField
+module.exports = MechanicalEquipmentParameter

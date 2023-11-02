@@ -10,7 +10,7 @@ const commonProductFieldSchema = new mongoose.Schema({
 	type: {
 		type: String,
 		required: true,
-		enum: ["Date", "Number", "Yes", "No", "Image"],
+		enum: ["Date", "Number", "Boolean", "Image"],
 	},
 	notes: String,
 })
