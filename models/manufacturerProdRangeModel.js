@@ -41,6 +41,7 @@ const manufacturerProdRangeSchema = new mongoose.Schema({
 		enum: ["mm", "inches"],
 		required: true,
 	},
+	notes: String,
 })
 
 const ManufacturerProdRange = mongoose.model("ManufacturerProdRange", manufacturerProdRangeSchema)

@@ -1,36 +1,36 @@
 "use strict"
 
-const CommonProductField = require(`${__dirname}/../../models/parameterModels/commonProductFieldModel.js`)
+const NormalPipeFittingParameter = require(`${__dirname}/../../models/parameterModels/normalPipeFittingParameterModel.js`)
 
-exports.getPagedCommonProductFields = async (pageNo, docsPerPage) => {
-	const totalDocs = await CommonProductField.countDocuments()
-	const commonProductFieldsData = await CommonProductField.find()
+exports.getPagedNormalPipeFittingParameters = async (pageNo, docsPerPage) => {
+	const totalDocs = await NormalPipeFittingParameter.countDocuments()
+	const normalPipeFittingParametersData = await NormalPipeFittingParameter.find()
 		.skip(pageNo * docsPerPage)
 		.limit(docsPerPage)
 
 	const response = {
 		total: totalDocs,
-		commonProductFieldsData,
+		normalPipeFittingParametersData,
 	}
 
 	return response
 }
 
-exports.createCommonProductField = async (pipeData) => {
-	const commonProductFieldObj = await CommonProductField.create(pipeData)
-	return commonProductFieldObj
+exports.createNormalPipeFittingParameter = async (pipeData) => {
+	const normalPipeFittingParameterObj = await NormalPipeFittingParameter.create(pipeData)
+	return normalPipeFittingParameterObj
 }
 
-exports.deleteCommonProductField = async (idArr) => {
-	// const isPresent = await CommonProductField.find({ _id: { $in: idArr } })
+exports.deleteNormalPipeFittingParameter = async (idArr) => {
+	// const isPresent = await NormalPipeFittingParameter.find({ _id: { $in: idArr } })
 	try {
-		return await CommonProductField.deleteMany({ _id: { $in: idArr } })
+		return await NormalPipeFittingParameter.deleteMany({ _id: { $in: idArr } })
 	} catch (error) {
 		throw error // Let the error handler handle it
 	}
 }
 
-exports.patchCommonProductField = async (id, updateData) => {
+exports.patchNormalPipeFittingParameter = async (id, updateData) => {
 	// console.log(id, updateData)
-	return await CommonProductField.findByIdAndUpdate({ _id: id }, updateData)
+	return await NormalPipeFittingParameter.findByIdAndUpdate({ _id: id }, updateData)
 }

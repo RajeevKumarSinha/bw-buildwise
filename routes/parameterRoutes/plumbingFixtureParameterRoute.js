@@ -2,16 +2,16 @@
 
 const express = require("express")
 
-const commonProductFieldRouter = express.Router()
+const plumbingFixtureParameterRouter = express.Router()
 
-const commonProductField = require(`${__dirname}/../../controllers/parameterControllers/commonProductFieldController`)
+const plumbingFixtureParameter = require(`${__dirname}/../../controllers/parameterControllers/plumbingFixtureParameterController`)
 
-commonProductFieldRouter
+plumbingFixtureParameterRouter
 	.route("/")
-	.get(commonProductField.getCommonProductFields)
-	.post(commonProductField.setCommonProductField)
-	.delete(commonProductField.removeCommonProductField)
+	.get(plumbingFixtureParameter.getPlumbingFixtureParameters)
+	.post(plumbingFixtureParameter.setPlumbingFixtureParameter)
+	.delete(plumbingFixtureParameter.removePlumbingFixtureParameter)
 
-commonProductFieldRouter.route("/:id").patch(commonProductField.updateCommonProductField)
+plumbingFixtureParameterRouter.route("/:id").patch(plumbingFixtureParameter.updatePlumbingFixtureParameter)
 
-module.exports = commonProductFieldRouter
+module.exports = plumbingFixtureParameterRouter

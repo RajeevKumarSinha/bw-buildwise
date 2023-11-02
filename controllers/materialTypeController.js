@@ -102,7 +102,11 @@ exports.updateMaterialType = async (req, res, next) => {
 		// convert the updateDetail object to titleCase
 		updateDetail = titleCaseObject(updateDetail)
 
-		await materialTypeService.patchMaterialType(id, updateDetail)
+		const isUpdated = await materialTypeService.patchMaterialType(id, updateDetail)
+
+		//isUpdated returns two value `null` or `{updated object }` , null is when the id is invalid.
+		if (!isUpdated) return next(errObject("Invalid Id", 404))
+
 		res.status(200).json({ status: "success", message: `Material type updated successfully.` })
 	} catch (error) {
 		if (error.code !== 11000) next(error)

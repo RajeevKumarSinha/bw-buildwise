@@ -2,16 +2,16 @@
 
 const express = require("express")
 
-const commonProductFieldRouter = express.Router()
+const valveParameterRouter = express.Router()
 
-const commonProductField = require(`${__dirname}/../../controllers/parameterControllers/commonProductFieldController`)
+const valveParameter = require(`${__dirname}/../../controllers/parameterControllers/ValveParameterController`)
 
-commonProductFieldRouter
+valveParameterRouter
 	.route("/")
-	.get(commonProductField.getCommonProductFields)
-	.post(commonProductField.setCommonProductField)
-	.delete(commonProductField.removeCommonProductField)
+	.get(valveParameter.getValveParameters)
+	.post(valveParameter.setValveParameter)
+	.delete(valveParameter.removeValveParameter)
 
-commonProductFieldRouter.route("/:id").patch(commonProductField.updateCommonProductField)
+valveParameterRouter.route("/:id").patch(valveParameter.updateValveParameter)
 
-module.exports = commonProductFieldRouter
+module.exports = valveParameterRouter

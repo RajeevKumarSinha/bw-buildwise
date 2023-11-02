@@ -1,36 +1,36 @@
 "use strict"
 
-const CommonProductField = require(`${__dirname}/../../models/parameterModels/commonProductFieldModel.js`)
+const PipeParameter = require(`${__dirname}/../../models/parameterModels/pipeParameterModel.js`)
 
-exports.getPagedCommonProductFields = async (pageNo, docsPerPage) => {
-	const totalDocs = await CommonProductField.countDocuments()
-	const commonProductFieldsData = await CommonProductField.find()
+exports.getPagedPipeParameters = async (pageNo, docsPerPage) => {
+	const totalDocs = await PipeParameter.countDocuments()
+	const pipeParametersData = await PipeParameter.find()
 		.skip(pageNo * docsPerPage)
 		.limit(docsPerPage)
 
 	const response = {
 		total: totalDocs,
-		commonProductFieldsData,
+		pipeParametersData,
 	}
 
 	return response
 }
 
-exports.createCommonProductField = async (pipeData) => {
-	const commonProductFieldObj = await CommonProductField.create(pipeData)
-	return commonProductFieldObj
+exports.createPipeParameter = async (pipeData) => {
+	const pipeParameterObj = await PipeParameter.create(pipeData)
+	return pipeParameterObj
 }
 
-exports.deleteCommonProductField = async (idArr) => {
-	// const isPresent = await CommonProductField.find({ _id: { $in: idArr } })
+exports.deletePipeParameter = async (idArr) => {
+	// const isPresent = await PipeParameter.find({ _id: { $in: idArr } })
 	try {
-		return await CommonProductField.deleteMany({ _id: { $in: idArr } })
+		return await PipeParameter.deleteMany({ _id: { $in: idArr } })
 	} catch (error) {
 		throw error // Let the error handler handle it
 	}
 }
 
-exports.patchCommonProductField = async (id, updateData) => {
+exports.patchPipeParameter = async (id, updateData) => {
 	// console.log(id, updateData)
-	return await CommonProductField.findByIdAndUpdate({ _id: id }, updateData)
+	return await PipeParameter.findByIdAndUpdate({ _id: id }, updateData)
 }

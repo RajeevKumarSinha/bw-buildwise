@@ -103,7 +103,11 @@ exports.updateMasterPipe = async (req, res, next) => {
 		// convert the masterPipeReq object to titleCase
 		masterPipeReq = titleCaseObject(masterPipeReq)
 
-		await masterPipeService.patchMasterPipe(id, masterPipeReq)
+		const isUpdated = await masterPipeService.patchMasterPipe(id, masterPipeReq)
+
+		//isUpdated returns two value `null` or `{updated object }` , null is when the id is invalid.
+		if (!isUpdated) return next(errObject("Invalid Id", 404))
+
 		res.status(200).json({ status: "success", message: `Master pipe updated successfully.` })
 	} catch (error) {
 		if (error.code !== 11000) next(error)

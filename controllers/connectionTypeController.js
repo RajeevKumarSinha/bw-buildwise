@@ -101,7 +101,11 @@ exports.updateConnectionType = async (req, res, next) => {
 		// change updateDetail into titleCase before updating.
 		updateDetail = titleCaseObject(updateDetail)
 
-		await connectionTypeService.patchConnectionType(id, updateDetail)
+		const isUpdated = await connectionTypeService.patchConnectionType(id, updateDetail)
+
+		//isUpdated returns two value `null` or `{updated object }` , null is when the id is invalid.
+		if (!isUpdated) return next(errObject("Invalid Id", 404))
+
 		res.status(200).json({ status: "success", message: `Connection updated successfully.` })
 	} catch (error) {
 		if (error.code !== 11000) next(error)

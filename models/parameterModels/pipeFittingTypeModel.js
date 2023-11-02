@@ -12,6 +12,10 @@ const pipeFittingTypeSchema = new mongoose.Schema({
 		required: true,
 		enum: [0, 1, 2, 3],
 	},
+	mandatoryField: {
+		type: String,
+		enum: ["Yes", "No"],
+	},
 	notes: String,
 })
 

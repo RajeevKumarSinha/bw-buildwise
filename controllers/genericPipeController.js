@@ -57,7 +57,11 @@ exports.removeGenericPipe = async (req, res, next) => {
 			return next(errObject("Can't delete collection as none is selected.", 400))
 		}
 
-		await genericPipeService.deleteGenericPipe(idArr)
+		const isUpdated = await genericPipeService.deleteGenericPipe(idArr)
+
+		//isUpdated returns two value `null` or `{updated object }` , null is when the id is invalid.
+		if (!isUpdated) return next(errObject("Invalid Id", 404))
+
 		res.status(204).json() //204 - No Content: The request was successful, but there is no additional information to send back
 	} catch (error) {
 		next(errObject("Can't delete genericPipe arrays", 400))

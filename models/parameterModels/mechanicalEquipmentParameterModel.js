@@ -12,6 +12,10 @@ const mechanicalEquipmentParameterSchema = new mongoose.Schema({
 		required: true,
 		enum: ["Date", "Number", "Boolean", "Image"],
 	},
+	mandatoryField: {
+		type: String,
+		enum: ["Yes", "No"],
+	},
 	notes: String,
 })
 

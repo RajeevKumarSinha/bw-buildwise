@@ -16,6 +16,7 @@ const connectionTypeSchema = new mongoose.Schema({
 		maxLength: 8,
 		set: (value) => value.toUpperCase(),
 	},
+	notes: String,
 })
 
 const ConnectionType = mongoose.model("ConnectionType", connectionTypeSchema)
