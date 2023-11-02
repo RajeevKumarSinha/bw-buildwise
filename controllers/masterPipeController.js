@@ -8,6 +8,7 @@ exports.getMasterPipes = async (req, res, next) => {
 	try {
 		const pageNo = parseInt(req.query.pageNo) || 0
 		const docsPerPage = parseInt(req.query.docsPerPage) || 10
+		const unit = req.query.unit || null
 
 		//////////////////////////////////////////////////////////////fuzzy search on hold.
 		// const searchQuery = req.query.search || "" // Change to your specific query parameter name
@@ -22,7 +23,7 @@ exports.getMasterPipes = async (req, res, next) => {
 		// }
 		///////////////////////////////////////////////////////////////////////////
 
-		const response = await masterPipeService.getPagedMasterPipes(pageNo, docsPerPage)
+		const response = await masterPipeService.getPagedMasterPipes(pageNo, docsPerPage, unit)
 
 		res.status(200).json(response)
 	} catch (error) {
