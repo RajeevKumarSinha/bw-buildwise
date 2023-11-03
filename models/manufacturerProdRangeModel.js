@@ -8,18 +8,18 @@ const manufacturerProdRangeSchema = new mongoose.Schema({
 		required: true,
 		ref: "Manufacturer",
 	},
-	country: {
-		type: String,
-		required: true,
-	},
+	// country: {
+	// 	type: String,
+	// 	required: true,
+	// },
 	productType: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true,
 		ref: "ProductType",
 	},
 	rangeName: {
-		type: String,
-		required: true,
+		sub: { type: String, required: true },
+		main: { type: String, required: true },
 	},
 	materialType: {
 		type: mongoose.Schema.Types.ObjectId,
@@ -31,16 +31,18 @@ const manufacturerProdRangeSchema = new mongoose.Schema({
 		ref: "ConnectionType",
 		required: true,
 	},
-	pipeSizesAvailable: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "MasterPipe",
-		required: true,
-	},
-	unitType: {
-		type: String,
-		enum: ["mm", "inches"],
-		required: true,
-	},
+	pipeSizesAvailable: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "MasterPipe",
+			required: true,
+		},
+	],
+	// unitType: {
+	// 	type: String,
+	// 	enum: ["mm", "inches"],
+	// 	required: true,
+	// },
 	notes: String,
 })
 

@@ -1,11 +1,10 @@
 "use strict"
 
 const ManufacturerProdRange = require(`${__dirname}/../models/manufacturerProdRangeModel`)
-const { errObject } = require(`${__dirname}/../helpers/helper`)
 
 exports.getPagedManufacturerProdRanges = async (pageNo, docsPerPage) => {
 	const totalDocs = await ManufacturerProdRange.countDocuments()
-	const genericPipeSystemsData = await ManufacturerProdRange.find()
+	const manufacturerProductRangesData = await ManufacturerProdRange.find()
 		.populate("manufacturer")
 		.populate("productType")
 		.populate("materialType")
@@ -16,7 +15,7 @@ exports.getPagedManufacturerProdRanges = async (pageNo, docsPerPage) => {
 
 	const response = {
 		total: totalDocs,
-		genericPipeSystemsData,
+		manufacturerProductRangesData,
 	}
 
 	return response
