@@ -8,6 +8,7 @@ exports.getCountries = async (req, res, next) => {
 	try {
 		const pageNo = parseInt(req.query.pageNo) || 0
 		const docsPerPage = parseInt(req.query.docsPerPage) || 10
+		const dropdown = req.query.dropdown === "Yes" ? "Yes" : null
 
 		//////////////////////////////////////////////////////////////fuzzy search on hold.
 		// const searchQuery = req.query.search || "" // Change to your specific query parameter name
@@ -23,7 +24,7 @@ exports.getCountries = async (req, res, next) => {
 		///////////////////////////////////////////////////////////////////////////
 
 		//  never write query in controller , it should be inside service✅
-		const response = await countryService.getPagedCountries(pageNo, docsPerPage)
+		const response = await countryService.getPagedCountries(pageNo, docsPerPage, dropdown)
 
 		res.status(200).json(response)
 	} catch (error) {
