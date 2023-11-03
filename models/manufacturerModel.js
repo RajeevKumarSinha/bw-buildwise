@@ -9,7 +9,7 @@ const manufacturerSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	countryID: {
+	country: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Country",
 	},
@@ -31,7 +31,6 @@ const manufacturerSchema = new mongoose.Schema({
 		enum: ["mm", "inches"], // only these two values are supported.
 	},
 	notes: String,
-	country: Object,
 })
 
 // Before saving the manufacturer, find the corresponding country and get its countryRegionCode
