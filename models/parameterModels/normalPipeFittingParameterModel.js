@@ -10,7 +10,7 @@ const normalPipeFittingParameterSchema = new mongoose.Schema({
 	type: {
 		type: String,
 		required: true,
-		enum: ["Date", "Number", "Boolean", "Image"],
+		enum: ["Date", "Number", "Text", "Boolean", "Image"],
 	},
 	mandatoryField: {
 		type: String,

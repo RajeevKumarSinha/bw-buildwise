@@ -4,11 +4,17 @@ const Country = require("../models/countryModel")
 
 const { errObject } = require(`${__dirname}/../helpers/helper.js`)
 
-exports.getPagedCountries = async (pageNo, docsPerPage) => {
+exports.getPagedCountries = async (pageNo, docsPerPage, dropdown) => {
+	let countriesData
 	const totalDocs = await Country.countDocuments()
-	const countriesData = await Country.find()
-		.skip(pageNo * docsPerPage)
-		.limit(docsPerPage)
+
+	if (dropdown === "yes") {
+		countriesData = await Country.find()
+	} else {
+		countriesData = await Country.find()
+			.skip(pageNo * docsPerPage)
+			.limit(docsPerPage)
+	}
 
 	const response = {
 		total: totalDocs,

@@ -87,7 +87,7 @@ app.use("/genericPipeSystems", genericPipeRouter)
 app.use("/manufacturerProdRanges", manufacturerProdRangeRouter)
 
 // these are parameter routers
-app.use("/dwvPipeFittingParameters", dwvPipeFittingParameterRouter)
+app.use("/dWVPipeFittingParameters", dwvPipeFittingParameterRouter)
 app.use("/mechanicalEquipmentParameters", mechanicalEquipmentParameterRouter)
 app.use("/normalPipeFittingParameters", normalPipeFittingParameterRouter)
 app.use("/pipeParameters", pipeParameterRouter)

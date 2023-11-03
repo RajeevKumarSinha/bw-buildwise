@@ -4,13 +4,13 @@ const DWVPipeFittingParameter = require(`${__dirname}/../../models/parameterMode
 
 exports.getdwvPagedPipeFittingParameters = async (pageNo, docsPerPage) => {
 	const totalDocs = await DWVPipeFittingParameter.countDocuments()
-	const pipeFittingParametersData = await DWVPipeFittingParameter.find()
+	const dWVPipeFittingParametersData = await DWVPipeFittingParameter.find()
 		.skip(pageNo * docsPerPage)
 		.limit(docsPerPage)
 
 	const response = {
 		total: totalDocs,
-		pipeFittingParametersData,
+		dWVPipeFittingParametersData,
 	}
 
 	return response
