@@ -22,7 +22,7 @@ exports.getManufacturers = async (req, res, next) => {
 exports.setManufacturer = async (req, res, next) => {
 	try {
 		let manufacturerObj = req.body
-
+		// console.log(manufacturerObj)
 		// convert the manufacturerObj object to titleCase
 		manufacturerObj = titleCaseObject(manufacturerObj)
 
@@ -33,6 +33,7 @@ exports.setManufacturer = async (req, res, next) => {
 			data: createdManufacturer,
 		})
 	} catch (error) {
+		// console.log(error)
 		if (error.code !== 11000) next(error)
 
 		next(errObject("A manufacturer with the same data already exists.", 400))
