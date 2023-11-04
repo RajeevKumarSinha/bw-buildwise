@@ -1,8 +1,6 @@
 "use strict"
 
 const mongoose = require("mongoose")
-const Country = require(`${__dirname}/countryModel.js`)
-const { errObject } = require(`${__dirname}/../helpers/helper.js`)
 
 const manufacturerSchema = new mongoose.Schema({
 	manufacturerName: {
@@ -15,7 +13,6 @@ const manufacturerSchema = new mongoose.Schema({
 	},
 	// countryID: String,
 	manufacturerCode: {
-		unique: true,
 		type: String,
 		required: true,
 		set: (value) => value.toUpperCase(),
