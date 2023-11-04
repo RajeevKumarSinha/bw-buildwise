@@ -21,6 +21,7 @@ const pipeFittingTypeRouter = require("./routes/parameterRoutes/pipeFittingTypeR
 const pipeParameterRouter = require("./routes/parameterRoutes/pipeParameterRoute") // PipeParameter route path
 const plumbingFixtureParameterRouter = require("./routes/parameterRoutes/plumbingFixtureParameterRoute") // plumbing Fixture parameter
 const valveParameterRouter = require("./routes/parameterRoutes/valveParameterRoute") // valve Fixture parameter route path
+const specialPipeFittingParametersRouter = require("./routes/parameterRoutes/specialPipeFittingParameterRoute") // special pipe Fitting parameters route path
 
 const { errorHandler } = require(`./helpers/helper.js`)
 
@@ -84,7 +85,7 @@ app.use("/connectionTypes", connectionTypeRouter)
 app.use("/genericPipeSystems", genericPipeRouter)
 
 // use manufacturerProdRange router
-app.use("/manufacturerProdRanges", manufacturerProdRangeRouter)
+app.use("/manufacturerProductRanges", manufacturerProdRangeRouter)
 
 // these are parameter routers
 app.use("/dWVPipeFittingParameters", dwvPipeFittingParameterRouter)
@@ -93,6 +94,7 @@ app.use("/normalPipeFittingParameters", normalPipeFittingParameterRouter)
 app.use("/pipeParameters", pipeParameterRouter)
 app.use("/plumbingFixtureParameters", plumbingFixtureParameterRouter)
 app.use("/valveParameters", valveParameterRouter)
+app.use("/specialPipeFittingParameters", specialPipeFittingParametersRouter)
 
 // commonProductFields
 app.use("/commonProductFields", commonProductFieldRouter)

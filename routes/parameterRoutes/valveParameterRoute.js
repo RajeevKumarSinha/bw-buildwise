@@ -4,7 +4,7 @@ const express = require("express")
 
 const valveParameterRouter = express.Router()
 
-const valveParameter = require(`${__dirname}/../../controllers/parameterControllers/ValveParameterController`)
+const valveParameter = require(`${__dirname}/../../controllers/parameterControllers/valveParameterController`)
 
 valveParameterRouter
 	.route("/")
