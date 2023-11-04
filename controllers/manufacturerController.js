@@ -79,6 +79,7 @@ exports.updateManufacturer = async (req, res, next) => {
 	try {
 		const updateId = req.params.id
 		let dataToUpdate = req.body
+		// console.log(dataToUpdate)
 
 		// if updateId is falsy , throw an error
 		if (!updateId) return next(errObject("Manufacturer Id is required to update country details", 400))
@@ -88,7 +89,7 @@ exports.updateManufacturer = async (req, res, next) => {
 			return next(errObject("Data is required to update Manufacturer details", 400))
 
 		// if countryCode is present in req body make it uppercase
-		if (dataToUpdate.countryCode) dataToUpdate.countryCode = dataToUpdate.countryCode.toUpperCase()
+		// if (dataToUpdate.countryCode) dataToUpdate.countryCode = dataToUpdate.countryCode.toUpperCase()
 
 		// convert the dataToUpdate object to titleCase
 		dataToUpdate = titleCaseObject(dataToUpdate)
