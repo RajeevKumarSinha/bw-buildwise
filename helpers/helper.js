@@ -73,6 +73,9 @@ const titleCaseObject = (object) => {
 		// if unit is encountered, continue
 		if (/unit/i.test(key)) continue
 
+		// if key type is object
+		// if (typeof object[key] === "object") continue
+
 		// convert everyString to TitleCase.
 		if (typeof object[key] === "string") object[key] = titleCase(object[key])
 		// console.log(object[key])
