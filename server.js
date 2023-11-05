@@ -23,6 +23,9 @@ const plumbingFixtureParameterRouter = require("./routes/parameterRoutes/plumbin
 const valveParameterRouter = require("./routes/parameterRoutes/valveParameterRoute") // valve Fixture parameter route path
 const specialPipeFittingParametersRouter = require("./routes/parameterRoutes/specialPipeFittingParameterRoute") // special pipe Fitting parameters route path
 
+// Advanced routers
+const pipeDataRouter = require("./routes/pipeDataRoute.js") // routes data route path
+
 const { errorHandler } = require(`./helpers/helper.js`)
 
 const morgan = require("morgan") // for development only
@@ -98,6 +101,9 @@ app.use("/specialPipeFittingParameters", specialPipeFittingParametersRouter)
 
 // commonProductFields
 app.use("/commonProductFields", commonProductFieldRouter)
+
+// pipesData
+app.use("/pipeDatas", pipeDataRouter)
 
 // pipefittngTypes
 app.use("/pipeFittingTypes", pipeFittingTypeRouter)
