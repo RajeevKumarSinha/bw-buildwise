@@ -1,6 +1,9 @@
 "use strict"
 
 const mongoose = require("mongoose")
+
+const { addDynamicFields, PipeData } = require("./../pipeDataModel")
+
 const pipeParameterSchema = new mongoose.Schema({
 	description: {
 		type: String,
@@ -19,6 +22,12 @@ const pipeParameterSchema = new mongoose.Schema({
 	notes: String,
 })
 
-const PipeParameter = mongoose.model("PipeParameter", pipeParameterSchema)
+// pipeParameterSchema.post("save", async function (doc) {
+// 	console.log(doc)
+// 	addDynamicFields()
+// })
 
+const PipeParameter = mongoose.model("PipeParameter", pipeParameterSchema)
 module.exports = PipeParameter
+// addDynamicFields()
+// console.log("added")

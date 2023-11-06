@@ -1,6 +1,6 @@
 "use strict"
 
-const PipeData = require(`${__dirname}/../models/pipeDataModel.js`)
+const { PipeData } = require(`${__dirname}/../models/pipeDataModel.js`)
 
 exports.createPipeData = async (dataProd) => {
 	return await PipeData.create(dataProd)
