@@ -7,9 +7,12 @@ const PipeParameter = require(`./../models/parameterModels/pipeParameterModel`)
 
 exports.createPipeData = async (dataProd) => {
 	// Fetch all mandatory pipe parameters
-	const mandatoryPipeParameters = (await PipeParameter.find({ mandatoryField: "Yes" })).map((item) =>
+	let mandatoryPipeParameters = await PipeParameter.find({ mandatoryField: "Yes" })
+	mandatoryPipeParameters = mandatoryPipeParameters.map((item) => {
 		item.type === "Text" ? (item.type = "String") : item.type
-	)
+		return item
+	})
+	// console.log(mandatoryPipeParameters)
 
 	// Create a new Mongoose schema to define dynamic fields
 	const pipeParameter = new Schema()
