@@ -57,8 +57,9 @@ const pipeDataSchema = new mongoose.Schema(
 		weight: String,
 		co2FootPrint: String,
 		notes: String,
-	},
-	{ strict: false }
+		param: mongoose.Schema.Types.Mixed,
+	}
+	// { strict: false }
 )
 
 // Date type in Mongoose can accept dates in various formats, but ISO 8601 is

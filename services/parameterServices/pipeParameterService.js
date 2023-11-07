@@ -1,6 +1,6 @@
 "use strict"
 
-const PipeParameter = require(`${__dirname}/../../models/parameterModels/pipeParameterModel.js`)
+const { PipeParameter } = require(`${__dirname}/../../models/parameterModels/pipeParameterModel.js`)
 
 exports.getPagedPipeParameters = async (pageNo, docsPerPage) => {
 	const totalDocs = await PipeParameter.countDocuments()

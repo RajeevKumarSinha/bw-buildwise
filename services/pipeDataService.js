@@ -1,31 +1,68 @@
 "use strict"
 
 const PipeData = require(`${__dirname}/../models/pipeDataModel.js`)
+const errObject = require("./../helpers/helper")
 
-const { Schema } = require("mongoose")
-const PipeParameter = require(`./../models/parameterModels/pipeParameterModel`)
+// const {pipeParameterSchema} = require(`./../models/parameterModels/pipeParameterModel`)
+// const { Schema } = require("mongoose")
+const { PipeParameter, pipeParameterSchema } = require(`./../models/parameterModels/pipeParameterModel`)
+
+function isValidDate(dateString) {
+	const date = new Date(dateString)
+	return !isNaN(date.getTime())
+}
 
 exports.createPipeData = async (dataProd) => {
 	// Fetch all mandatory pipe parameters
 	let mandatoryPipeParameters = await PipeParameter.find({ mandatoryField: "Yes" })
-	mandatoryPipeParameters = mandatoryPipeParameters.map((item) => {
-		item.type === "Text" ? (item.type = "String") : item.type
-		return item
+	const params = Object.keys(dataProd.param)
+	let itemsPresent = []
+	// loop over and check if dataProd.parma are present in pipeParameters and are of valid types.
+	mandatoryPipeParameters.forEach((item) => {
+		// item.type === "Text" ? (item.type = "String") : item.type
+
+		if (params.includes(item.description)) {
+			// push the matched item in itemsPresent
+			itemsPresent.push(item.description)
+
+			if (item.type === `Text` && typeof dataProd.param[item.description] !== "string")
+				throw errObject(`${item.description} is not a valid ${item.type}`)
+
+			if (item.type === "Date" && !isValidDate(dataProd.param[item.description]))
+				throw errObject(`${item.description} is not a valid ${item.type}`)
+
+			if (item.type === "Number" && typeof dataProd.param[item.description] !== "number")
+				throw errObject(`${item.description} is not a valid ${item.type}`)
+
+			if (item.type === "Boolean" && typeof dataProd.param[item.description] !== "boolean")
+				throw errObject(`${item.description} is not a valid ${item.type}`)
+
+			// for image it is not done yet.
+		}
 	})
+
+	// delete those properties from reqBody which are not present in pipeParameters
+	params.forEach((param) => {
+		if (!itemsPresent.includes(param)) delete dataProd.param[param]
+	})
+
+	// console.log(dataProd, mandatoryPipeParameters)
+
+	// return dataProd
+	// return await PipeData.create(dataProd)
 	// console.log(mandatoryPipeParameters)
 
 	// Create a new Mongoose schema to define dynamic fields
-	const pipeParameter = new Schema()
+	// const pipeParameter = new Schema()
 
 	// Iterate through the mandatory pipe parameters and add dynamic fields to the schema
-	mandatoryPipeParameters.forEach((field) => {
-		// Use the `add` method to add a dynamic field to the schema
-		pipeParameter.add({ [field.description]: [field.type] })
-	})
+	// mandatoryPipeParameters.forEach((field) => {
+	// 	// Use the `add` method to add a dynamic field to the schema
+	// 	pipeParameterSchema.add({ [field.description]: [field.type] })
+	// })
 
 	// Create and return new PipeData document with dynamic fields
-	return await PipeData.create(dataProd)
-
+	//************************************************************************************************* */
 	// Create a pipeline to dynamically add fields based on mandatoryPipeParameters
 	// const addFieldsPipeline = []
 

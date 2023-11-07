@@ -2,8 +2,6 @@
 
 const mongoose = require("mongoose")
 
-const { addDynamicFields, PipeData } = require("./../pipeDataModel")
-
 const pipeParameterSchema = new mongoose.Schema({
 	description: {
 		type: String,
