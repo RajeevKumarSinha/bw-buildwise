@@ -41,6 +41,15 @@ const errObject = (message, statusCode = null) => {
 	return err
 }
 
+/**
+ *	titleCase
+ *
+ *	Description: converts a string to TitleCase.
+ *
+ * @param {string} inputString
+ *
+ **/
+
 function titleCase(inputString) {
 	let titleCased = ""
 	let capitalizeNext = true // Flag to capitalize the next character
@@ -65,6 +74,15 @@ function titleCase(inputString) {
 	return titleCased
 }
 
+/**
+ *	titleCaseObject
+ *
+ *	Description: Converts an object's everyString Value to Title Case.
+ *
+ * @param {object} object - object
+ *
+ **/
+
 const titleCaseObject = (object) => {
 	for (const key in object) {
 		// continue if code is encountered
@@ -83,6 +101,10 @@ const titleCaseObject = (object) => {
 	return object
 }
 
-// console.log(titleCase("hanthi , mere saathi"))
+// checks if the given string is a valid date or not ,Valid date format: YYYY-MM-DD
+function isValidDate(dateString) {
+	const date = new Date(dateString)
+	return !isNaN(date.getTime())
+}
 
-module.exports = { errorHandler, errObject, titleCase, titleCaseObject }
+module.exports = { errorHandler, errObject, titleCase, titleCaseObject, isValidDate }

@@ -1,18 +1,13 @@
 "use strict"
 
 const PipeData = require(`${__dirname}/../models/pipeDataModel.js`)
-const errObject = require("./../helpers/helper")
+const { errObject, isValidDate } = require("./../helpers/helper")
 
 // const {pipeParameterSchema} = require(`./../models/parameterModels/pipeParameterModel`)
 // const { Schema } = require("mongoose")
-const { PipeParameter, pipeParameterSchema } = require(`./../models/parameterModels/pipeParameterModel`)
+const PipeParameter = require(`./../models/parameterModels/pipeParameterModel`)
 
-function isValidDate(dateString) {
-	const date = new Date(dateString)
-	return !isNaN(date.getTime())
-}
-
-exports.createPipeData = async (dataProd) => {
+const validateAndFilterPipeData = async function (dataProd) {
 	// Fetch all mandatory pipe parameters
 	let mandatoryPipeParameters = await PipeParameter.find({ mandatoryField: "Yes" })
 	const params = Object.keys(dataProd.param)
@@ -26,16 +21,16 @@ exports.createPipeData = async (dataProd) => {
 			itemsPresent.push(item.description)
 
 			if (item.type === `Text` && typeof dataProd.param[item.description] !== "string")
-				throw errObject(`${item.description} is not a valid ${item.type}`)
+				throw errObject(`${item.description} is not a valid ${item.type}`, 400)
 
 			if (item.type === "Date" && !isValidDate(dataProd.param[item.description]))
-				throw errObject(`${item.description} is not a valid ${item.type}`)
+				throw errObject(`${item.description} is not a valid ${item.type}`, 400)
 
 			if (item.type === "Number" && typeof dataProd.param[item.description] !== "number")
-				throw errObject(`${item.description} is not a valid ${item.type}`)
+				throw errObject(`${item.description} is not a valid ${item.type}`, 400)
 
 			if (item.type === "Boolean" && typeof dataProd.param[item.description] !== "boolean")
-				throw errObject(`${item.description} is not a valid ${item.type}`)
+				throw errObject(`${item.description} is not a valid ${item.type}`, 400)
 
 			// for image it is not done yet.
 		}
@@ -46,10 +41,16 @@ exports.createPipeData = async (dataProd) => {
 		if (!itemsPresent.includes(param)) delete dataProd.param[param]
 	})
 
+	return dataProd
+}
+
+exports.createPipeData = async (dataProd) => {
+	const pipeDataToCreate = await validateAndFilterPipeData(dataProd)
+
 	// console.log(dataProd, mandatoryPipeParameters)
 
 	// return dataProd
-	// return await PipeData.create(dataProd)
+	return await PipeData.create(pipeDataToCreate)
 	// console.log(mandatoryPipeParameters)
 
 	// Create a new Mongoose schema to define dynamic fields
@@ -113,7 +114,11 @@ exports.getPagedPipeDatas = async (pageNo, docsPerPage) => {
 
 exports.patchPipeData = async (id, updateData) => {
 	// console.log(id, updateData)
-	return await PipeData.findByIdAndUpdate({ _id: id }, updateData)
+	if (!updateData.param) return await PipeData.findByIdAndUpdate({ _id: id }, updateData)
+
+	const filteredUpdateData = await validateAndFilterPipeData(updateData)
+
+	return await PipeData.findByIdAndUpdate({ _id: id }, filteredUpdateData)
 }
 
 exports.deletePipeData = async (idArr) => {

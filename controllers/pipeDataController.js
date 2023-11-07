@@ -15,7 +15,7 @@ exports.setPipeData = async (req, res, next) => {
 			.status(201)
 			.json({ status: "success", message: "New PipeData added successfully.", data: addedPipeData })
 	} catch (error) {
-		// console.log(error)
+		console.log(error)
 		if (error.code !== 11000) next(error)
 
 		next(errObject("A PipeData with the same data already exists.", 400))
