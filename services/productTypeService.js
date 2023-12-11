@@ -6,12 +6,16 @@ exports.createProductType = async (dataProd) => {
 	return await ProductType.create(dataProd)
 }
 
-exports.getPagedProductTypes = async (pageNo, docsPerPage) => {
+exports.getPagedProductTypes = async (pageNo, docsPerPage, dropdown) => {
+	let productTypesData
 	const totalDocs = await ProductType.countDocuments()
 
-	const productTypesData = await ProductType.find()
-		.skip(pageNo * docsPerPage)
-		.limit(docsPerPage)
+	if (dropdown === null)
+		productTypesData = await ProductType.find()
+			.skip(pageNo * docsPerPage)
+			.limit(docsPerPage)
+
+	if (dropdown === "yes") productTypesData = await ProductType.find()
 
 	const response = {
 		total: totalDocs,

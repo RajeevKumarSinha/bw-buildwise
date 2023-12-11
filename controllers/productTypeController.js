@@ -30,8 +30,9 @@ exports.getProductType = async (req, res, next) => {
 	try {
 		const pageNo = parseInt(req.query.pageNo) || 0
 		const docsPerPage = parseInt(req.query.docsPerPage) || 10
+		const dropdown = req.query.dropdown || null
 
-		const response = await productTypeService.getPagedProductTypes(pageNo, docsPerPage)
+		const response = await productTypeService.getPagedProductTypes(pageNo, docsPerPage, dropdown)
 
 		res.status(200).json(response)
 	} catch (error) {

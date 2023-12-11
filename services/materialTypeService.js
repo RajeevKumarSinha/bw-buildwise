@@ -2,11 +2,16 @@
 
 const MaterialType = require("../models/materialTypeModel")
 
-exports.getPagedMaterialTypes = async (pageNo, docsPerPage) => {
+exports.getPagedMaterialTypes = async (pageNo, docsPerPage, dropdown) => {
+	let materialTypesData
 	const totalDocs = await MaterialType.countDocuments()
-	const materialTypesData = await MaterialType.find()
-		.skip(pageNo * docsPerPage)
-		.limit(docsPerPage)
+
+	if (dropdown === "yes") materialTypesData = await MaterialType.find()
+
+	if (dropdown === null)
+		materialTypesData = await MaterialType.find()
+			.skip(pageNo * docsPerPage)
+			.limit(docsPerPage)
 
 	const response = {
 		total: totalDocs,

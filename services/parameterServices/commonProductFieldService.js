@@ -2,11 +2,15 @@
 
 const CommonProductField = require(`${__dirname}/../../models/parameterModels/commonProductFieldModel.js`)
 
-exports.getPagedCommonProductFields = async (pageNo, docsPerPage) => {
+exports.getPagedCommonProductFields = async (pageNo, docsPerPage, dropdown) => {
+	let commonProductFieldsData
 	const totalDocs = await CommonProductField.countDocuments()
-	const commonProductFieldsData = await CommonProductField.find()
-		.skip(pageNo * docsPerPage)
-		.limit(docsPerPage)
+	if (dropdown === "yes") commonProductFieldsData = await CommonProductField.find()
+
+	if (dropdown === null)
+		commonProductFieldsData = await CommonProductField.find()
+			.skip(pageNo * docsPerPage)
+			.limit(docsPerPage)
 
 	const response = {
 		total: totalDocs,
