@@ -1,5 +1,5 @@
 #!/bin/bash
 echo "Executing after install script..."
 # Start the Node.js application
-cd /var/www/your-backend
+cd /var/www/bw-buildwise
 node app.js
