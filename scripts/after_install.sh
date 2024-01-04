@@ -19,6 +19,8 @@ npm install
 # Install PM2 globally
 npm install -g pm2
 
+echo "Current Directory: $(pwd)"
+
 # Check if the server is already running with PM2
 if pm2 pid server.js >/dev/null; then
     # Server is running, restart it
@@ -26,6 +28,7 @@ if pm2 pid server.js >/dev/null; then
 else
     # Server is not running, start it
     pm2 start server.js --output app.out.log --error app.err.log --merge-logs
+
 fi
 
 # Save the PM2 process list for persistence across reboots
