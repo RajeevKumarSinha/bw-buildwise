@@ -15,9 +15,6 @@ if command -v node &>/dev/null; then
 else
   # Install the latest version of Node.js using NVM
   nvm install node
-
-  # Install PM2 globally
-  npm install -g pm2
 fi
 
 # Check if the working directory exists
