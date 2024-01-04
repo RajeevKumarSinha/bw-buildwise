@@ -21,6 +21,8 @@ npm install -g pm2
 
 echo "Current Directory: $(pwd)"
 
+exit 0
+
 # Check if the server is already running with PM2
 if pm2 pid server.js >/dev/null; then
     # Server is running, restart it
