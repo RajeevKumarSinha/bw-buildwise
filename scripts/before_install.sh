@@ -21,10 +21,11 @@ else
 fi
 
 # Check if the working directory exists
-DIR="/home/ec2-user/buildwise-app"
+DIR="/home/ec2-user"
 if [ -d "$DIR" ]; then
   echo "${DIR} exists"
 else
   echo "Creating ${DIR} directory"
   mkdir "${DIR}"
+  git clone -b main https://github.com/RajeevKumarSinha/bw-buildwise.git
 fi
