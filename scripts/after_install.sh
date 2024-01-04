@@ -25,7 +25,7 @@ if pm2 pid server.js >/dev/null; then
     pm2 restart server.js
 else
     # Server is not running, start it
-    pm2 start server.js --name bw-buildwise --output app.out.log --error app.err.log --merge-logs
+    pm2 start server.js --output app.out.log --error app.err.log --merge-logs
 fi
 
 # Save the PM2 process list for persistence across reboots
