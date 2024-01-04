@@ -58,7 +58,7 @@ const connectToDbStartListening = async () => {
 			useUnifiedTopology: true,
 		});
 		console.log("Db connected successfully");
-		app.listen(3030, () => console.log("Listening on port 3030"));
+		app.listen(80, () => console.log("Listening on port 80"));
 	} catch (error) {
 		console.log("Authentication Failed: wrong UserName/Password", error);
 	}
